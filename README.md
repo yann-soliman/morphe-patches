@@ -12,6 +12,16 @@ Ouvrez ce lien sur votre téléphone avec Morphe installé, puis confirmez l'ajo
 
 Chaque patch indique les applications et versions qu'il accepte. Ajouter cette source n'applique pas tous les patches : vous choisissez ceux à utiliser pour votre application.
 
+## Keepcool : calendrier de réservation sur 30 jours
+
+Keepcool 1.8.21 limite son sélecteur de dates à dix dates en comptant aujourd'hui. Selon le jour de la semaine, le composant ne construit en plus que trois pages hebdomadaires. Des cours plus éloignés existent pourtant déjà dans l'API et peuvent être réservés par un compte autorisé.
+
+Le patch **Keepcool: 30-day booking calendar** rend sélectionnables aujourd'hui et les trente jours suivants. Il ajoute les pages hebdomadaires manquantes et désactive les dates après `J+30` sur la dernière page. Il ne change ni le compte, ni l'abonnement, ni les requêtes de réservation.
+
+Compatibilité : **Keepcool 1.8.21**, package `fr.keepcool.memberapp`. L'API a renvoyé des créneaux jusqu'à `J+29`, et une réservation à `J+14` a été confirmée côté serveur. L'affichage du calendrier patché doit encore être validé sur un appareil Android.
+
+Le fingerprint recherche la lecture de `RoleParams.getMaxBookingVisibleDays()`, l'initialisation du `DatePickerComponent`, ses trois calendriers d'origine, `KEY_DATES` et l'adapter `ViewPager2`. Il exige une correspondance unique. Le test indépendant vérifie ensuite cinq semaines systématiques, une sixième semaine conditionnelle et exactement 31 dates sélectionnables pour chacun des sept jours possibles.
+
 ## Keepcool : accepter les adresses avec un `+`
 
 Keepcool 1.8.21 refuse certaines adresses pourtant valides, comme `prenom+keepcool@gmail.com`. Le formulaire désactive le bouton de connexion avant même d'envoyer la demande au serveur.
