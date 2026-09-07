@@ -5,6 +5,7 @@ import app.morphe.patcher.methodCall
 import app.morphe.patcher.string
 import app.morphe.patcher.extensions.InstructionExtensions.addInstruction
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
+import app.morphe.patcher.extensions.InstructionExtensions.addInstructionsWithLabels
 import app.morphe.patcher.util.smali.toInstructions
 import app.morphe.patcher.patch.*
 import com.android.tools.smali.dexlib2.Opcode
@@ -157,13 +158,13 @@ val keepcoolThirtyDayCalendarPatch = bytecodePatch(
                 invoke-virtual {v3, v4}, Ljava/util/ArrayList;->add(Ljava/lang/Object;)Z
             """.trimIndent()
         val compiledWeekFour = weekFourInstructions.toInstructions(picker)
-        picker.addInstructions(insertionIndex, compiledWeekFour)
+        picker.addInstructionsWithLabels(insertionIndex, weekFourInstructions)
         insertionIndex += compiledWeekFour.size
         picker.addInstruction(
             insertionIndex++,
             BuilderInstruction22x(Opcode.MOVE_OBJECT_FROM16, 4, receiverRegister)
         )
-        picker.addInstructions(
+        picker.addInstructionsWithLabels(
             insertionIndex,
             """
                 # A partial week +5 is needed when today is Saturday or Sunday.
@@ -200,6 +201,7 @@ val keepcoolThirtyDayCalendarPatch = bytecodePatch(
                 :j30_week5_done
                 invoke-virtual {v3, v4}, Ljava/util/ArrayList;->add(Ljava/lang/Object;)Z
                 :j30_week5_skip
+                nop
             """.trimIndent()
         )
     }
