@@ -94,6 +94,7 @@ public final class AvailabilityRuntime {
         boolean changed;
         synchronized (LOCK) {
             repositoryRef = new WeakReference<>(repository);
+            latestContext = snapshot;
             changed = !snapshot.filter.equals(currentFilter);
             if (changed) {
                 currentFilter = snapshot.filter;
@@ -278,11 +279,16 @@ public final class AvailabilityRuntime {
                     continue;
                 }
 
+                ContextSnapshot context = latestContext;
+                if (context == null || !context.filter.equals(key.filter)) {
+                    CACHE.remove(key);
+                    continue;
+                }
                 Request request = new Request(
                     key,
                     generation,
                     repository,
-                    ContextSnapshot.fromFilter(repository, key.filter)
+                    context
                 );
                 inFlight++;
                 launch.add(request);
@@ -840,17 +846,6 @@ public final class AvailabilityRuntime {
                 categoryCopy,
                 timeBlockCopy
             );
-        }
-
-        static ContextSnapshot fromFilter(
-            Object repository,
-            FilterKey ignored
-        ) {
-            // The request needs the original application objects, not only the
-            // canonical key. Reconstruct from the latest captured context.
-            synchronized (LOCK) {
-                return latestContext;
-            }
         }
     }
 
