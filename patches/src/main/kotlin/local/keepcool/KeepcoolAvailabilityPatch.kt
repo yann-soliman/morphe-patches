@@ -1,6 +1,7 @@
 package local.keepcool
 
 import app.morphe.patcher.Fingerprint
+import app.morphe.patcher.fieldAccess
 import app.morphe.patcher.methodCall
 import app.morphe.patcher.extensions.InstructionExtensions.addInstruction
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
@@ -36,6 +37,12 @@ internal object BookingSearchContextFingerprint : Fingerprint(
 internal object BookingDateCellBindFingerprint : Fingerprint(
     returnType = "V",
     filters = listOf(
+        fieldAccess(
+            definingClass = DATE_MODEL_CLASS,
+            name = "f",
+            type = "Z",
+            opcode = Opcode.IGET_BOOLEAN
+        ),
         methodCall(
             definingClass = CELL_DATE_PICKER_CLASS,
             name = "n",
@@ -123,7 +130,14 @@ val keepcoolBookingAvailabilityDotsPatch = bytecodePatch(
         // a ThreadLocal in the extension, then pass the two registers already used
         // by the original CellDatePickerComponent.n(booked, ...) call.
         val cellBind = BookingDateCellBindFingerprint.matchAll(1..1).single()
-        val renderCall = cellBind.instructionMatches.single()
+        val renderCall = cellBind.instructionMatches.single { match ->
+            val reference =
+                (match.instruction as? ReferenceInstruction)?.methodReference()
+            reference?.definingClass == CELL_DATE_PICKER_CLASS &&
+                reference.name == "n" &&
+                reference.parameterTypes.map { it.toString() } ==
+                    listOf("Z", "LZ6/f;")
+        }
         val renderReference =
             (renderCall.instruction as? ReferenceInstruction)?.methodReference()
         check(renderReference?.definingClass == CELL_DATE_PICKER_CLASS)
@@ -165,12 +179,16 @@ val keepcoolBookingAvailabilityDotsPatch = bytecodePatch(
                 "$AVAILABILITY_EXTENSION->bindRemembered(Ljava/lang/Object;Z)V"
         }
 
-        cellBind.method.addInstructions(
+        // Preserve the model before iget-boolean overwrites its register. Insert the
+        // bind separately immediately before Keepcool's original render call.
+        cellBind.method.addInstruction(
             renderCall.index,
-            """
-                invoke-static/range {v$dateModelRegister .. v$dateModelRegister}, $AVAILABILITY_EXTENSION->rememberDateModel(Ljava/lang/Object;)V
-                $bindInvoke
-            """.trimIndent()
+            bindInvoke
+        )
+        cellBind.method.addInstruction(
+            bookedReadIndex,
+            "invoke-static/range {v$dateModelRegister .. v$dateModelRegister}, " +
+                "$AVAILABILITY_EXTENSION->rememberDateModel(Ljava/lang/Object;)V"
         )
 
         // Observe Keepcool's existing booked-date list. The extension uses it only

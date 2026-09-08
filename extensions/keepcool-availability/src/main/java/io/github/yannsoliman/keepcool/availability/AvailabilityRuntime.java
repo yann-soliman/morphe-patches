@@ -14,15 +14,18 @@ import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
+import java.text.ParsePosition;
+import java.text.SimpleDateFormat;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
@@ -120,11 +123,16 @@ public final class AvailabilityRuntime {
         Object dateModel = PENDING_DATE_MODEL.get();
         PENDING_DATE_MODEL.remove();
 
-        if (!(cellObject instanceof View) || dateModel == null) return;
-        String date = requestDate(dateModel);
-        if (date == null) return;
-
+        if (!(cellObject instanceof View)) return;
         View cell = (View) cellObject;
+        String date = dateModel == null ? null : requestDate(dateModel);
+        if (date == null) {
+            synchronized (LOCK) {
+                BINDINGS.remove(cell);
+            }
+            return;
+        }
+
         Binding binding;
         synchronized (LOCK) {
             boolean effectiveBooked =
@@ -167,9 +175,14 @@ public final class AvailabilityRuntime {
                         iterator.remove();
                     }
                 }
-                QUEUE.removeIf(key ->
-                    key.filter.equals(currentFilter)
-                        && changedDates.contains(key.date));
+                Iterator<CacheKey> queued = QUEUE.iterator();
+                while (queued.hasNext()) {
+                    CacheKey key = queued.next();
+                    if (key.filter.equals(currentFilter)
+                        && changedDates.contains(key.date)) {
+                        queued.remove();
+                    }
+                }
             }
 
             visible = snapshotBindingsLocked();
@@ -659,19 +672,16 @@ public final class AvailabilityRuntime {
     }
 
     private static String requestDate(Object model) {
-        // Keepcool 1.8.21 DatePickerModel has two String fields. Resolve by
-        // value rather than depending on the obfuscated a/b field names.
+        // Keepcool 1.8.21 stores requestDate in Z6/c.b; Z6/c.a is only
+        // the one-letter day label.
         try {
-            for (Field field : model.getClass().getDeclaredFields()) {
-                if (field.getType() != String.class) continue;
-                field.setAccessible(true);
-                String date = normalizeDate(field.get(model));
-                if (date != null) return date;
-            }
+            Field field = model.getClass().getDeclaredField("b");
+            if (field.getType() != String.class) return null;
+            field.setAccessible(true);
+            return normalizeDate(field.get(model));
         } catch (Throwable ignored) {
             return null;
         }
-        return null;
     }
 
     private static Set<String> normalizeDates(List<?> values) {
@@ -688,8 +698,21 @@ public final class AvailabilityRuntime {
 
     private static String normalizeDate(Object value) {
         if (!(value instanceof String)) return null;
-        Matcher matcher = ISO_DATE.matcher((String) value);
-        return matcher.find() ? matcher.group(1) : null;
+        String raw = (String) value;
+        Matcher matcher = ISO_DATE.matcher(raw);
+        if (matcher.find()) return matcher.group(1);
+
+        SimpleDateFormat source =
+            new SimpleDateFormat("yyyy/MMMM/dd", Locale.FRANCE);
+        source.setLenient(false);
+        ParsePosition position = new ParsePosition(0);
+        Date parsed = source.parse(raw, position);
+        if (parsed == null || position.getIndex() != raw.length()) return null;
+
+        SimpleDateFormat target =
+            new SimpleDateFormat("yyyy-MM-dd", Locale.ROOT);
+        target.setLenient(false);
+        return target.format(parsed);
     }
 
     private static long now() {
@@ -884,7 +907,7 @@ public final class AvailabilityRuntime {
                 if (value != null) values.add(String.valueOf(value));
             }
         }
-        values.sort(Comparator.naturalOrder());
+        Collections.sort(values);
         return Collections.unmodifiableList(values);
     }
 
@@ -896,7 +919,7 @@ public final class AvailabilityRuntime {
                 values.add(timeBlockKey(block));
             }
         }
-        values.sort(Comparator.naturalOrder());
+        Collections.sort(values);
         return Collections.unmodifiableList(values);
     }
 
