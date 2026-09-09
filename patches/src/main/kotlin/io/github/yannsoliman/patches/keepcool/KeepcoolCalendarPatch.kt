@@ -1,8 +1,5 @@
 package io.github.yannsoliman.patches.keepcool
 
-import app.morphe.patcher.Fingerprint
-import app.morphe.patcher.methodCall
-import app.morphe.patcher.string
 import app.morphe.patcher.extensions.InstructionExtensions.addInstruction
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructionsWithLabels
 import app.morphe.patcher.util.smali.toInstructions
@@ -16,28 +13,8 @@ import com.android.tools.smali.dexlib2.iface.reference.MethodReference
 import com.android.tools.smali.dexlib2.iface.reference.StringReference
 import com.android.tools.smali.dexlib2.iface.reference.TypeReference
 
-private const val DATE_PICKER_CLASS = "Lcommon_ui/business_components/common/date_picker/DatePickerComponent;"
-private const val ROLE_PARAMS_CLASS = "Lmodels/domain/user/RoleParams;"
 private const val CALENDAR_DAYS_INCLUSIVE = 31
 
-internal object BookingCalendarSetupFingerprint : Fingerprint(
-    returnType = "V",
-    filters = listOf(
-        methodCall(definingClass = ROLE_PARAMS_CLASS, name = "getMaxBookingVisibleDays"),
-        methodCall(definingClass = DATE_PICKER_CLASS, name = "r")
-    )
-)
-
-internal object DatePickerBuildFingerprint : Fingerprint(
-    returnType = "V",
-    filters = listOf(
-        methodCall(definingClass = DATE_PICKER_CLASS, name = "getCurrentCalendar"),
-        methodCall(definingClass = DATE_PICKER_CLASS, name = "getNextWeekCalendar"),
-        methodCall(definingClass = DATE_PICKER_CLASS, name = "getLastWeekCalendar"),
-        string("KEY_DATES"),
-        methodCall(definingClass = "Landroidx/viewpager2/widget/ViewPager2;", name = "setAdapter")
-    )
-)
 
 private fun ReferenceInstruction.methodReference(): MethodReference? = reference as? MethodReference
 private fun ReferenceInstruction.typeReference(): TypeReference? = reference as? TypeReference
@@ -47,12 +24,7 @@ val keepcoolThirtyDayCalendarPatch = bytecodePatch(
     name = "Keepcool: 30-day booking calendar",
     description = "Show and allow booking from today through J+30. Keepcool 1.8.21 only."
 ) {
-    compatibleWith(Compatibility(
-        name = "Keepcool",
-        packageName = "fr.keepcool.memberapp",
-        apkFileType = ApkFileType.APK,
-        targets = listOf(AppTarget(version = "1.8.21"))
-    ))
+    compatibleWith(KEEPCOOL_COMPATIBILITY)
     execute {
         // The API value is 10, but the component interprets it as a count including today.
         // Override only the value passed to the date picker: J through J+30 is 31 dates.
