@@ -52,7 +52,9 @@ jobs:
         run: ./tools/check.sh
 
       - name: Clear build artifacts before release
-        run: ./gradlew clean --no-build-cache
+        run: |
+          rm -rf patches/build
+          find extensions -type d -name build -prune -exec rm -rf {} + 2>/dev/null || true
 
       - name: Install release dependencies
         run: npm ci
