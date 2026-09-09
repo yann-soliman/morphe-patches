@@ -1,9 +1,13 @@
 name: Promote dev to main
 
 on:
-  push:
+  workflow_run:
+    workflows:
+      - Release
     branches:
       - dev
+    types:
+      - completed
   workflow_dispatch:
 
 permissions:
@@ -12,6 +16,7 @@ permissions:
 
 jobs:
   open-promotion-pr:
+    if: ${{ github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success' }}
     runs-on: ubuntu-latest
 
     steps:
@@ -22,18 +27,31 @@ jobs:
         run: |
           set -euo pipefail
 
-          existing="$(gh pr list             --repo "$REPOSITORY"             --base main             --head dev             --state open             --json number             --jq 'length')"
+          existing="$(gh pr list \
+            --repo "$REPOSITORY" \
+            --base main \
+            --head dev \
+            --state open \
+            --json number \
+            --jq 'length')"
 
           if [[ "$existing" != "0" ]]; then
             echo "A dev -> main pull request already exists."
             exit 0
           fi
 
-          commits="$(gh api             "repos/$REPOSITORY/compare/main...dev"             --jq '.ahead_by')"
+          commits="$(gh api \
+            "repos/$REPOSITORY/compare/main...dev" \
+            --jq '.ahead_by')"
 
           if [[ "$commits" == "0" ]]; then
             echo "dev is not ahead of main."
             exit 0
           fi
 
-          gh pr create             --repo "$REPOSITORY"             --base main             --head dev             --title "chore: promote dev to stable"             --body "The changes on dev have been published as a pre-release. Merge this PR after device validation to promote the exact tested code to a stable release."
+          gh pr create \
+            --repo "$REPOSITORY" \
+            --base main \
+            --head dev \
+            --title "chore: promote dev to stable" \
+            --body "The Release workflow completed successfully on dev. Merge this PR after validating the pre-release on device when the change affects runtime behavior."
