@@ -4,63 +4,92 @@ import sys
 import zipfile
 from pathlib import Path
 
-CALENDAR_SOURCES = {
-    "io/github/yannsoliman/patches/keepcool/KeepcoolCalendarPatch.kt",
-    "io/github/yannsoliman/patches/keepcool/KeepcoolCalendarFingerprints.kt",
-}
-
-CALENDAR_CLASSES = {
-    "io/github/yannsoliman/patches/keepcool/KeepcoolCalendarPatchKt.class",
-    "io/github/yannsoliman/patches/keepcool/KeepcoolCalendarFingerprintsKt.class",
-    "io/github/yannsoliman/patches/keepcool/BookingCalendarSetupFingerprint.class",
-    "io/github/yannsoliman/patches/keepcool/DatePickerBuildFingerprint.class",
+CALENDAR_DESCRIPTORS = {
+    b"Lio/github/yannsoliman/patches/keepcool/KeepcoolCalendarPatchKt;",
+    b"Lio/github/yannsoliman/patches/keepcool/KeepcoolCalendarFingerprintsKt;",
+    b"Lio/github/yannsoliman/patches/keepcool/BookingCalendarSetupFingerprint;",
+    b"Lio/github/yannsoliman/patches/keepcool/DatePickerBuildFingerprint;",
 }
 
 
-def archive_entries(path: Path) -> set[str]:
-    if not zipfile.is_zipfile(path):
-        raise SystemExit(f"{path} is not a ZIP/JAR-compatible MPP")
+def inspect_archive_bytes(data: bytes, prefix: str = "") -> tuple[list[str], list[bytes]]:
+    entries: list[str] = []
+    dex_blobs: list[bytes] = []
+    bio = io.BytesIO(data)
+    if not zipfile.is_zipfile(bio):
+        return entries, dex_blobs
 
-    entries: set[str] = set()
-    with zipfile.ZipFile(path) as zf:
+    bio.seek(0)
+    with zipfile.ZipFile(bio) as zf:
         for name in zf.namelist():
-            entries.add(name)
-            if name.endswith((".jar", ".zip")):
-                data = zf.read(name)
-                if zipfile.is_zipfile(io.BytesIO(data)):
-                    with zipfile.ZipFile(io.BytesIO(data)) as nested:
-                        entries.update(nested.namelist())
-    return entries
+            full = f"{prefix}{name}"
+            entries.append(full)
+            payload = zf.read(name)
+            lower = name.lower()
+
+            if lower.endswith(".dex"):
+                dex_blobs.append(payload)
+            elif lower.endswith((".jar", ".zip", ".mpp")):
+                nested_entries, nested_dex = inspect_archive_bytes(payload, f"{full}!/")
+                entries.extend(nested_entries)
+                dex_blobs.extend(nested_dex)
+
+    return entries, dex_blobs
+
+
+def inspect(path: Path) -> tuple[list[str], list[bytes]]:
+    data = path.read_bytes()
+    if not zipfile.is_zipfile(io.BytesIO(data)):
+        raise SystemExit(f"{path} is not a ZIP/JAR-compatible MPP")
+    return inspect_archive_bytes(data)
+
+
+def descriptor_name(value: bytes) -> str:
+    return value.decode("ascii").removeprefix("L").removesuffix(";")
 
 
 def main() -> None:
     if len(sys.argv) != 3:
         raise SystemExit("usage: verify_mpp_contents.py PUBLIC_MPP PERSONAL_MPP")
 
-    public_entries = archive_entries(Path(sys.argv[1]))
-    personal_entries = archive_entries(Path(sys.argv[2]))
+    public_entries, public_dex = inspect(Path(sys.argv[1]))
+    personal_entries, personal_dex = inspect(Path(sys.argv[2]))
+
+    if not public_dex:
+        raise SystemExit(
+            "public MPP has no DEX entries: "
+            + ", ".join(name for name in public_entries if name.lower().endswith((".jar", ".dex")))
+        )
+    if not personal_dex:
+        raise SystemExit(
+            "personal MPP has no DEX entries: "
+            + ", ".join(name for name in personal_entries if name.lower().endswith((".jar", ".dex")))
+        )
+
+    public_bytes = b"".join(public_dex)
+    personal_bytes = b"".join(personal_dex)
 
     leaked = sorted(
-        name for name in (CALENDAR_SOURCES | CALENDAR_CLASSES)
-        if name in public_entries
+        descriptor_name(desc)
+        for desc in CALENDAR_DESCRIPTORS
+        if desc in public_bytes
     )
-    missing = sorted(name for name in CALENDAR_CLASSES if name not in personal_entries)
+    missing = sorted(
+        descriptor_name(desc)
+        for desc in CALENDAR_DESCRIPTORS
+        if desc not in personal_bytes
+    )
 
     if leaked:
-        raise SystemExit(f"calendar artifacts leaked into public MPP: {leaked}")
+        raise SystemExit(f"calendar classes leaked into public DEX: {leaked}")
     if missing:
-        interesting = sorted(
-            name for name in personal_entries
-            if "keepcool" in name.lower() or name.endswith((".dex", ".jar", ".class"))
-        )
-        print("Personal MPP relevant entries:", file=sys.stderr)
-        for name in interesting[:200]:
-            print(f"  {name}", file=sys.stderr)
-        raise SystemExit(f"calendar classes missing from personal MPP: {missing}")
+        raise SystemExit(f"calendar classes missing from personal DEX: {missing}")
 
     print("MPP contents: PASS")
-    print("Calendar artifacts absent from public MPP")
-    print("Calendar classes present in personal MPP")
+    print(f"Public DEX entries: {len(public_dex)}")
+    print(f"Personal DEX entries: {len(personal_dex)}")
+    print("Calendar classes absent from public DEX")
+    print("Calendar classes present in personal DEX")
 
 
 if __name__ == "__main__":

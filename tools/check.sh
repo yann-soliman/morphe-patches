@@ -31,8 +31,12 @@ run_logged() {
 cd "$ROOT"
 
 run_logged "Public Gradle build + bundle" public-build.log "$ROOT/build-local.sh"
-PUBLIC_MPP="$(find "$ROOT/patches/build/libs" -maxdepth 1 -type f -name 'patches-*.mpp' -print -quit)"
-test -n "$PUBLIC_MPP"
+mapfile -t PUBLIC_MPP_CANDIDATES < <(
+  find "$ROOT/patches/build/libs" -maxdepth 1 -type f \
+    -name 'patches-*.mpp' ! -name '*sources*' ! -name '*javadoc*' -print
+)
+test ${#PUBLIC_MPP_CANDIDATES[@]} -gt 0
+PUBLIC_MPP="$(python3 "$ROOT/tools/select_dex_mpp.py" "${PUBLIC_MPP_CANDIDATES[@]}")"
 cp "$PUBLIC_MPP" "$WORK/public.mpp"
 
 run_logged "Public bundle metadata" public-list.log \
