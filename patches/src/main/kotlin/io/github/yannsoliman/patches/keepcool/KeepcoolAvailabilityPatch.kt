@@ -1,8 +1,5 @@
 package io.github.yannsoliman.patches.keepcool
 
-import app.morphe.patcher.Fingerprint
-import app.morphe.patcher.fieldAccess
-import app.morphe.patcher.methodCall
 import app.morphe.patcher.extensions.InstructionExtensions.addInstruction
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.patch.*
@@ -17,50 +14,7 @@ import com.android.tools.smali.dexlib2.iface.reference.MethodReference
 
 private const val AVAILABILITY_EXTENSION =
     "Lio/github/yannsoliman/keepcool/availability/AvailabilityRuntime;"
-private const val USER_REPOSITORY_CLASS = "Lapis/repository/UserRepository;"
-private const val DATE_PICKER_CLASS =
-    "Lcommon_ui/business_components/common/date_picker/DatePickerComponent;"
-private const val CELL_DATE_PICKER_CLASS =
-    "Lcommon_ui/business_components/common/date_picker/CellDatePickerComponent;"
-private const val DATE_MODEL_CLASS = "LZ6/c;"
 
-internal object BookingSearchContextFingerprint : Fingerprint(
-    returnType = "Ljava/lang/Object;",
-    filters = listOf(
-        methodCall(
-            definingClass = USER_REPOSITORY_CLASS,
-            name = "findBookingSlots"
-        )
-    )
-)
-
-internal object BookingDateCellBindFingerprint : Fingerprint(
-    returnType = "V",
-    filters = listOf(
-        fieldAccess(
-            definingClass = DATE_MODEL_CLASS,
-            name = "f",
-            type = "Z",
-            opcode = Opcode.IGET_BOOLEAN
-        ),
-        methodCall(
-            definingClass = CELL_DATE_PICKER_CLASS,
-            name = "n",
-            parameters = listOf("Z", "LZ6/f;")
-        )
-    )
-)
-
-internal object BookedDatesUpdateFingerprint : Fingerprint(
-    returnType = "V",
-    filters = listOf(
-        methodCall(
-            definingClass = DATE_PICKER_CLASS,
-            name = "setDateIsBooked",
-            parameters = listOf("Ljava/util/List;")
-        )
-    )
-)
 
 private fun ReferenceInstruction.methodReference(): MethodReference? = reference as? MethodReference
 private fun ReferenceInstruction.fieldReference(): FieldReference? = reference as? FieldReference
@@ -88,12 +42,7 @@ val keepcoolBookingAvailabilityDotsPatch = bytecodePatch(
     name = "Keepcool: booking availability dots",
     description = "Show a green dot on calendar dates having at least one booking slot with a free place. Keepcool 1.8.21 only."
 ) {
-    compatibleWith(Compatibility(
-        name = "Keepcool",
-        packageName = "fr.keepcool.memberapp",
-        apkFileType = ApkFileType.APK,
-        targets = listOf(AppTarget(version = "1.8.21"))
-    ))
+    compatibleWith(KEEPCOOL_COMPATIBILITY)
 
     extendWith("extensions/keepcool-availability.mpe")
 
