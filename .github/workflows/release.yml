@@ -54,6 +54,10 @@ jobs:
       - name: Install release dependencies
         run: npm ci
 
+      - name: Capture current public version
+        id: previous_version
+        run: echo "version=$(jq -r '.version' patches-bundle.json)" >> "$GITHUB_OUTPUT"
+
       - name: Publish release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -67,3 +71,47 @@ jobs:
         uses: actions/attest-build-provenance@v4
         with:
           subject-path: patches/build/libs/patches-*.mpp
+
+      - name: Publish personal source
+        if: ${{ github.ref_name == 'main' }}
+        env:
+          PREVIOUS_VERSION: ${{ steps.previous_version.outputs.version }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_ACTOR: ${{ github.actor }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+        run: |
+          set -euo pipefail
+          NEW_VERSION="$(jq -r '.version' patches-bundle.json)"
+
+          if [[ "$NEW_VERSION" == "$PREVIOUS_VERSION" ]]; then
+            echo "No new stable release; personal source is unchanged."
+            exit 0
+          fi
+
+          ./tools/publish-personal-bundle.sh "$NEW_VERSION"
+
+      - name: Remove legacy releases containing the personal patch
+        if: ${{ github.ref_name == 'main' }}
+        env:
+          PREVIOUS_VERSION: ${{ steps.previous_version.outputs.version }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          NEW_VERSION="$(jq -r '.version' patches-bundle.json)"
+
+          if [[ "$NEW_VERSION" == "$PREVIOUS_VERSION" ]]; then
+            echo "No new stable release; legacy releases are unchanged."
+            exit 0
+          fi
+
+          for tag in \
+            keepcool-availability-dots-test.1 \
+            v1.1.0 \
+            v1.1.1 \
+            v1.2.0
+          do
+            if gh release view "$tag" >/dev/null 2>&1; then
+              gh release delete "$tag" --yes
+              echo "Deleted release $tag (tag preserved)."
+            fi
+          done
