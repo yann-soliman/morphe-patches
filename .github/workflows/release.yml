@@ -72,6 +72,22 @@ jobs:
           GITHUB_REF_NAME: ${{ github.ref_name }}
         run: npx semantic-release
 
+      - name: Verify GitHub release
+        env:
+          PREVIOUS_VERSION: ${{ steps.previous_version.outputs.version }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          NEW_VERSION="$(jq -r '.version' patches-bundle.json)"
+
+          if [[ "$NEW_VERSION" == "$PREVIOUS_VERSION" ]]; then
+            echo "No new release was created."
+            exit 0
+          fi
+
+          gh release view "v$NEW_VERSION" >/dev/null
+          echo "GitHub release v$NEW_VERSION exists."
+
       - name: Attest built bundle
         if: ${{ hashFiles('patches/build/libs/patches-*.mpp') != '' }}
         uses: actions/attest-build-provenance@v4
