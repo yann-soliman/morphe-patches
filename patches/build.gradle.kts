@@ -6,15 +6,6 @@ val personalBundle = providers.gradleProperty("personalBundle")
     .map(String::toBoolean)
     .orElse(false)
 
-sourceSets {
-    main {
-        if (!personalBundle.get()) {
-            kotlin.exclude("**/KeepcoolCalendarPatch.kt")
-            kotlin.exclude("**/KeepcoolCalendarFingerprints.kt")
-        }
-    }
-}
-
 val patchListGeneratorClasspath = configurations.create("patchListGeneratorClasspath")
 dependencies {
     testImplementation("junit:junit:4.13.2")
