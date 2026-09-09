@@ -51,11 +51,8 @@ jobs:
           GITHUB_ACTOR: ${{ github.actor }}
         run: ./tools/check.sh
 
-      - name: Prepare public release build
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          GITHUB_ACTOR: ${{ github.actor }}
-        run: ./build-local.sh
+      - name: Clear build artifacts before release
+        run: ./gradlew clean --no-build-cache
 
       - name: Install release dependencies
         run: npm ci
@@ -85,8 +82,17 @@ jobs:
             exit 0
           fi
 
-          gh release view "v$NEW_VERSION" >/dev/null
-          echo "GitHub release v$NEW_VERSION exists."
+          ASSETS="$(gh release view "v$NEW_VERSION" --json assets --jq '.assets[].name')"
+          EXPECTED="patches-$NEW_VERSION.mpp"
+
+          if [[ "$ASSETS" != "$EXPECTED" ]]; then
+            echo "Unexpected release assets for v$NEW_VERSION:" >&2
+            printf '%s\n' "$ASSETS" >&2
+            echo "Expected exactly: $EXPECTED" >&2
+            exit 1
+          fi
+
+          echo "GitHub release v$NEW_VERSION contains exactly $EXPECTED."
 
       - name: Attest built bundle
         if: ${{ hashFiles('patches/build/libs/patches-*.mpp') != '' }}
