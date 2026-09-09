@@ -39,17 +39,11 @@ patches {
 }
 
 tasks {
-    named("build") {
-        mustRunAfter("clean")
-    }
-
     register<JavaExec>("generatePatchesList") {
         description = "Build patch with patch list"
         dependsOn(build)
         classpath = sourceSets["main"].runtimeClasspath + patchListGeneratorClasspath
         mainClass.set("util.PatchListGeneratorKt")
     }
-    publish {
-        dependsOn("clean", "generatePatchesList")
-    }
+    publish { dependsOn("generatePatchesList") }
 }
