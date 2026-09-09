@@ -1,3 +1,9 @@
+## [1.2.1-dev.1](https://github.com/yann-soliman/morphe-patches/compare/v1.2.0...v1.2.1-dev.1) (2026-09-09)
+
+### 🐛 Bug Fixes
+
+* separate personal calendar patch from public bundle ([5e9aa91](https://github.com/yann-soliman/morphe-patches/commit/5e9aa917b14cfb149f1f6e17566407f91bc224ad))
+
 ## [1.2.0](https://github.com/yann-soliman/morphe-patches/compare/v1.1.1...v1.2.0) (2026-09-08)
 
 ### ✨ New Features
