@@ -1,3 +1,10 @@
+## [1.2.1-dev.3](https://github.com/yann-soliman/morphe-patches/compare/v1.2.1-dev.2...v1.2.1-dev.3) (2026-09-09)
+
+### 🐛 Bug Fixes
+
+* clear release artifacts without Gradle ([f385b95](https://github.com/yann-soliman/morphe-patches/commit/f385b955af2bdc1964048e073c91b184ce60e40a))
+* publish only the current release artifact ([7eacab0](https://github.com/yann-soliman/morphe-patches/commit/7eacab05d4a5aeca22db23a7c7a839cb941f2d0e))
+
 ## [1.2.1-dev.2](https://github.com/yann-soliman/morphe-patches/compare/v1.2.1-dev.1...v1.2.1-dev.2) (2026-09-09)
 
 ### 🐛 Bug Fixes
