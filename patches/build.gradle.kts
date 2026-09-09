@@ -8,8 +8,9 @@ val personalBundle = providers.gradleProperty("personalBundle")
 
 sourceSets {
     main {
-        if (personalBundle.get()) {
-            kotlin.srcDir("src/personal/kotlin")
+        if (!personalBundle.get()) {
+            kotlin.exclude("**/KeepcoolCalendarPatch.kt")
+            kotlin.exclude("**/KeepcoolCalendarFingerprints.kt")
         }
     }
 }
