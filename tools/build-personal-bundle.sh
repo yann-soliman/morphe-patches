@@ -28,12 +28,16 @@ done
 
 "$ROOT/build-local.sh" -PpersonalBundle=true
 
-MPP="$(find "$ROOT/patches/build/libs" -maxdepth 1 -type f \
-  -name 'patches-*.mpp' ! -name '*sources*' ! -name '*javadoc*' -print -quit)"
-if [[ -z "$MPP" ]]; then
+mapfile -t MPP_CANDIDATES < <(
+  find "$ROOT/patches/build/libs" -maxdepth 1 -type f \
+    -name 'patches-*.mpp' ! -name '*sources*' ! -name '*javadoc*' -print
+)
+if (( ${#MPP_CANDIDATES[@]} == 0 )); then
   echo "Personal MPP not found" >&2
   exit 1
 fi
+
+MPP="$(python3 "$ROOT/tools/select_dex_mpp.py" "${MPP_CANDIDATES[@]}")"
 
 # Preserve the Android-ready bundle immediately. generatePatchesList depends on a
 # regular Gradle build and may replace the .mpp with a non-dex bundle.
