@@ -9,6 +9,13 @@ CALENDAR_SOURCES = {
     "io/github/yannsoliman/patches/keepcool/KeepcoolCalendarFingerprints.kt",
 }
 
+CALENDAR_CLASSES = {
+    "io/github/yannsoliman/patches/keepcool/KeepcoolCalendarPatchKt.class",
+    "io/github/yannsoliman/patches/keepcool/KeepcoolCalendarFingerprintsKt.class",
+    "io/github/yannsoliman/patches/keepcool/BookingCalendarSetupFingerprint.class",
+    "io/github/yannsoliman/patches/keepcool/DatePickerBuildFingerprint.class",
+}
+
 
 def archive_entries(path: Path) -> set[str]:
     if not zipfile.is_zipfile(path):
@@ -33,11 +40,14 @@ def main() -> None:
     public_entries = archive_entries(Path(sys.argv[1]))
     personal_entries = archive_entries(Path(sys.argv[2]))
 
-    leaked = sorted(name for name in CALENDAR_SOURCES if name in public_entries)
-    missing = sorted(name for name in CALENDAR_SOURCES if name not in personal_entries)
+    leaked = sorted(
+        name for name in (CALENDAR_SOURCES | CALENDAR_CLASSES)
+        if name in public_entries
+    )
+    missing = sorted(name for name in CALENDAR_CLASSES if name not in personal_entries)
 
     if leaked:
-        raise SystemExit(f"calendar sources leaked into public MPP: {leaked}")
+        raise SystemExit(f"calendar artifacts leaked into public MPP: {leaked}")
     if missing:
         interesting = sorted(
             name for name in personal_entries
@@ -46,11 +56,11 @@ def main() -> None:
         print("Personal MPP relevant entries:", file=sys.stderr)
         for name in interesting[:200]:
             print(f"  {name}", file=sys.stderr)
-        raise SystemExit(f"calendar sources missing from personal MPP: {missing}")
+        raise SystemExit(f"calendar classes missing from personal MPP: {missing}")
 
     print("MPP contents: PASS")
-    print("Calendar sources absent from public MPP")
-    print("Calendar sources present in personal MPP")
+    print("Calendar artifacts absent from public MPP")
+    print("Calendar classes present in personal MPP")
 
 
 if __name__ == "__main__":
