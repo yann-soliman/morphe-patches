@@ -1,4 +1,4 @@
-package local.keepcool
+package io.github.yannsoliman.patches.keepcool
 
 import app.morphe.patcher.Fingerprint
 import app.morphe.patcher.methodCall
