@@ -1,3 +1,9 @@
+## [1.2.1-dev.2](https://github.com/yann-soliman/morphe-patches/compare/v1.2.1-dev.1...v1.2.1-dev.2) (2026-09-09)
+
+### 🐛 Bug Fixes
+
+* verify release publication and handle promotion fallback ([287aeb5](https://github.com/yann-soliman/morphe-patches/commit/287aeb574a1a92eee8327bf45857fa3480ad7bad))
+
 ## [1.2.1-dev.1](https://github.com/yann-soliman/morphe-patches/compare/v1.2.0...v1.2.1-dev.1) (2026-09-09)
 
 ### 🐛 Bug Fixes
