@@ -31,19 +31,26 @@ run_logged() {
 cd "$ROOT"
 
 run_logged "Public Gradle build + bundle" public-build.log "$ROOT/build-local.sh"
+PUBLIC_MPP="$(find "$ROOT/patches/build/libs" -maxdepth 1 -type f -name 'patches-*.mpp' -print -quit)"
+test -n "$PUBLIC_MPP"
+cp "$PUBLIC_MPP" "$WORK/public.mpp"
+
 run_logged "Public bundle metadata" public-list.log \
   env PATCH_LIST_OUTPUT="$WORK/public-patches-list.json" \
   "$ROOT/gradlew" generatePatchesList --no-build-cache
 
 run_logged "Personal Gradle build + bundle" personal-build.log \
-  "$ROOT/build-local.sh" -PpersonalBundle=true
-run_logged "Personal bundle metadata" personal-list.log \
-  env PATCH_LIST_OUTPUT="$WORK/personal-patches-list.json" \
-  "$ROOT/gradlew" -PpersonalBundle=true generatePatchesList --no-build-cache
+  bash "$ROOT/tools/build-personal-bundle.sh" "$WORK/personal-build"
+cp "$WORK/personal-build/patches-personal.mpp" "$WORK/personal.mpp"
+cp "$WORK/personal-build/patches-list.json" "$WORK/personal-patches-list.json"
 
 run_logged "Bundle visibility" visibility.log \
   python3 "$ROOT/tools/verify_bundle_visibility.py" \
   "$WORK/public-patches-list.json" "$WORK/personal-patches-list.json"
+
+run_logged "MPP packaged contents" mpp-contents.log \
+  python3 "$ROOT/tools/verify_mpp_contents.py" \
+  "$WORK/public.mpp" "$WORK/personal.mpp"
 
 run_logged "Repository regression tests" tests.log "$ROOT/tools/test.sh"
 printf 'Repository check: PASS\n'

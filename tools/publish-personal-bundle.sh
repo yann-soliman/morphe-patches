@@ -14,19 +14,7 @@ trap cleanup EXIT
 
 cd "$ROOT"
 
-"$ROOT/build-local.sh" -PpersonalBundle=true
-
-MPP="$(find "$ROOT/patches/build/libs" -maxdepth 1 -type f \
-  -name 'patches-*.mpp' ! -name '*sources*' ! -name '*javadoc*' -print -quit)"
-if [[ -z "$MPP" ]]; then
-  echo "Personal MPP not found" >&2
-  exit 1
-fi
-
-PATCH_LIST_OUTPUT="$WORK/patches-list.json" \
-  "$ROOT/gradlew" -PpersonalBundle=true generatePatchesList --no-build-cache
-
-cp "$MPP" "$WORK/patches-personal.mpp"
+bash "$ROOT/tools/build-personal-bundle.sh" "$WORK"
 
 python3 - "$WORK/patches-bundle.json" "$VERSION" "$REPOSITORY" <<'PY'
 import json
@@ -39,10 +27,10 @@ version = sys.argv[2]
 repository = sys.argv[3]
 
 payload = {
-    "created_at": datetime.now(timezone.utc).replace(microsecond=0).isoformat().replace("+00:00", "Z"),
+    "created_at": datetime.now(timezone.utc).replace(tzinfo=None, microsecond=0).isoformat(),
     "description": "Personal Keepcool bundle.",
     "download_url": (
-        f"https://raw.githubusercontent.com/{repository}/personal-dist/"
+        f"https://raw.githubusercontent.com/{repository}/refs/heads/personal-dist/"
         "personal/patches-personal.mpp"
     ),
     "signature_download_url": "",
@@ -75,4 +63,4 @@ fi
 git push --force-with-lease origin "$DIST_BRANCH"
 
 echo "Personal source:"
-echo "https://raw.githubusercontent.com/$REPOSITORY/$DIST_BRANCH/personal/patches-bundle.json"
+echo "https://raw.githubusercontent.com/$REPOSITORY/refs/heads/$DIST_BRANCH/personal/patches-bundle.json"

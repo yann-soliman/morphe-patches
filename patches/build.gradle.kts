@@ -6,14 +6,6 @@ val personalBundle = providers.gradleProperty("personalBundle")
     .map(String::toBoolean)
     .orElse(false)
 
-sourceSets {
-    main {
-        if (personalBundle.get()) {
-            kotlin.srcDir("src/personal/kotlin")
-        }
-    }
-}
-
 val patchListGeneratorClasspath = configurations.create("patchListGeneratorClasspath")
 dependencies {
     testImplementation("junit:junit:4.13.2")
