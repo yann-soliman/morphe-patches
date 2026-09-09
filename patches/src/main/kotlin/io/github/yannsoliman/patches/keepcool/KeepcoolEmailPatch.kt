@@ -1,8 +1,5 @@
 package io.github.yannsoliman.patches.keepcool
 
-import app.morphe.patcher.Fingerprint
-import app.morphe.patcher.methodCall
-import app.morphe.patcher.string
 import app.morphe.patcher.extensions.InstructionExtensions.replaceInstruction
 import app.morphe.patcher.patch.*
 import com.android.tools.smali.dexlib2.Opcode
@@ -17,28 +14,12 @@ internal const val ORIGINAL_REGEX = """^(([\w-]+\.)+[\w-]+|([a-zA-Z]|[\w-]{2,}))
 internal val PLUS_REGEX = ORIGINAL_REGEX.substringBefore('@')
     .replace("[\\w-]", "[\\w+\\-]") + "@" + ORIGINAL_REGEX.substringAfter('@')
 
-internal object KeepcoolEmailFingerprint : Fingerprint(
-    returnType = "Z",
-    parameters = listOf("Ljava/lang/String;"),
-    filters = listOf(
-        string(ORIGINAL_REGEX),
-        methodCall(definingClass = "Ljava/util/regex/Pattern;", name = "compile"),
-        methodCall(definingClass = "Ljava/util/regex/Pattern;", name = "matcher"),
-        methodCall(definingClass = "Ljava/util/regex/Matcher;", name = "matches")
-    )
-)
-
 @Suppress("unused")
 val keepcoolPlusEmailPatch = bytecodePatch(
     name = "Keepcool: allow plus in email",
     description = "Allow + in the local email part without changing the input or login request. Keepcool 1.8.21 only."
 ) {
-    compatibleWith(Compatibility(
-        name = "Keepcool",
-        packageName = "fr.keepcool.memberapp",
-        apkFileType = ApkFileType.APK,
-        targets = listOf(AppTarget(version = "1.8.21"))
-    ))
+    compatibleWith(KEEPCOOL_COMPATIBILITY)
     execute {
         // Fail closed on zero OR multiple matches; never trust an obfuscated name.
         val match = KeepcoolEmailFingerprint.matchAll(1..1).single()

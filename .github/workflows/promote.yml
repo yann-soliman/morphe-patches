@@ -1,0 +1,39 @@
+name: Promote dev to main
+
+on:
+  push:
+    branches:
+      - dev
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  open-promotion-pr:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Open promotion PR when dev is ahead
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REPOSITORY: ${{ github.repository }}
+        run: |
+          set -euo pipefail
+
+          existing="$(gh pr list             --repo "$REPOSITORY"             --base main             --head dev             --state open             --json number             --jq 'length')"
+
+          if [[ "$existing" != "0" ]]; then
+            echo "A dev -> main pull request already exists."
+            exit 0
+          fi
+
+          commits="$(gh api             "repos/$REPOSITORY/compare/main...dev"             --jq '.ahead_by')"
+
+          if [[ "$commits" == "0" ]]; then
+            echo "dev is not ahead of main."
+            exit 0
+          fi
+
+          gh pr create             --repo "$REPOSITORY"             --base main             --head dev             --title "chore: promote dev to stable"             --body "The changes on dev have been published as a pre-release. Merge this PR after device validation to promote the exact tested code to a stable release."
