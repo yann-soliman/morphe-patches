@@ -17,7 +17,6 @@ Ajouter cette source n'applique pas tous les patches : vous choisissez ceux à u
 | Application | Patch | Fonction |
 | --- | --- | --- |
 | Keepcool 1.8.21 | **Keepcool: allow plus in email** | Autorise les adresses contenant un `+` avant le `@` sans modifier l'adresse envoyée au serveur. |
-| Keepcool 1.8.21 | **Keepcool: 30-day booking calendar** | Étend le calendrier de réservation d'aujourd'hui jusqu'à J+30. |
 | Keepcool 1.8.21 | **Keepcool: booking availability dots** | Affiche une pastille verte sur les dates ayant au moins un créneau avec une place disponible. |
 
 Le détail du fonctionnement, de l'implémentation et des validations des patches Keepcool est disponible dans [leur README dédié](patches/src/main/kotlin/io/github/yannsoliman/patches/keepcool/README.md).
