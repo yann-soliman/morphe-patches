@@ -8,7 +8,6 @@ import com.android.tools.smali.dexlib2.Opcode
 
 internal const val DATE_PICKER_CLASS =
     "Lcommon_ui/business_components/common/date_picker/DatePickerComponent;"
-internal const val ROLE_PARAMS_CLASS = "Lmodels/domain/user/RoleParams;"
 internal const val USER_REPOSITORY_CLASS = "Lapis/repository/UserRepository;"
 internal const val CELL_DATE_PICKER_CLASS =
     "Lcommon_ui/business_components/common/date_picker/CellDatePickerComponent;"
@@ -25,27 +24,6 @@ internal object KeepcoolEmailFingerprint : Fingerprint(
     )
 )
 
-internal object BookingCalendarSetupFingerprint : Fingerprint(
-    returnType = "V",
-    filters = listOf(
-        methodCall(definingClass = ROLE_PARAMS_CLASS, name = "getMaxBookingVisibleDays"),
-        methodCall(definingClass = DATE_PICKER_CLASS, name = "r")
-    )
-)
-
-internal object DatePickerBuildFingerprint : Fingerprint(
-    returnType = "V",
-    filters = listOf(
-        methodCall(definingClass = DATE_PICKER_CLASS, name = "getCurrentCalendar"),
-        methodCall(definingClass = DATE_PICKER_CLASS, name = "getNextWeekCalendar"),
-        methodCall(definingClass = DATE_PICKER_CLASS, name = "getLastWeekCalendar"),
-        string("KEY_DATES"),
-        methodCall(
-            definingClass = "Landroidx/viewpager2/widget/ViewPager2;",
-            name = "setAdapter"
-        )
-    )
-)
 
 internal object BookingSearchContextFingerprint : Fingerprint(
     returnType = "Ljava/lang/Object;",
