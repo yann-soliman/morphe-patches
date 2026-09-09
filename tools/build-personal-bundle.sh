@@ -35,7 +35,9 @@ if [[ -z "$MPP" ]]; then
   exit 1
 fi
 
+# Preserve the Android-ready bundle immediately. generatePatchesList depends on a
+# regular Gradle build and may replace the .mpp with a non-dex bundle.
+cp "$MPP" "$OUTPUT_DIR/patches-personal.mpp"
+
 PATCH_LIST_OUTPUT="$OUTPUT_DIR/patches-list.json" \
   "$ROOT/gradlew" -PpersonalBundle=true generatePatchesList --no-build-cache
-
-cp "$MPP" "$OUTPUT_DIR/patches-personal.mpp"
