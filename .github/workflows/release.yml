@@ -105,34 +105,20 @@ jobs:
       - name: Publish personal source
         if: ${{ github.ref_name == 'main' }}
         env:
-          PREVIOUS_VERSION: ${{ steps.previous_version.outputs.version }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GITHUB_ACTOR: ${{ github.actor }}
           GITHUB_REPOSITORY: ${{ github.repository }}
         run: |
           set -euo pipefail
-          NEW_VERSION="$(jq -r '.version' patches-bundle.json)"
-
-          if [[ "$NEW_VERSION" == "$PREVIOUS_VERSION" ]]; then
-            echo "No new stable release; personal source is unchanged."
-            exit 0
-          fi
-
-          ./tools/publish-personal-bundle.sh "$NEW_VERSION"
+          CURRENT_VERSION="$(jq -r '.version' patches-bundle.json)"
+          bash ./tools/publish-personal-bundle.sh "$CURRENT_VERSION"
 
       - name: Remove legacy releases containing the personal patch
         if: ${{ github.ref_name == 'main' }}
         env:
-          PREVIOUS_VERSION: ${{ steps.previous_version.outputs.version }}
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           set -euo pipefail
-          NEW_VERSION="$(jq -r '.version' patches-bundle.json)"
-
-          if [[ "$NEW_VERSION" == "$PREVIOUS_VERSION" ]]; then
-            echo "No new stable release; legacy releases are unchanged."
-            exit 0
-          fi
 
           for tag in \
             keepcool-availability-dots-test.1 \
@@ -143,5 +129,7 @@ jobs:
             if gh release view "$tag" >/dev/null 2>&1; then
               gh release delete "$tag" --yes
               echo "Deleted release $tag (tag preserved)."
+            else
+              echo "Release $tag already absent."
             fi
           done
