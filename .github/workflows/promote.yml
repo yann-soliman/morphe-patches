@@ -49,9 +49,18 @@ jobs:
             exit 0
           fi
 
-          gh pr create \
+          if ! output="$(gh pr create \
             --repo "$REPOSITORY" \
             --base main \
             --head dev \
             --title "chore: promote dev to stable" \
-            --body "The Release workflow completed successfully on dev. Merge this PR after validating the pre-release on device when the change affects runtime behavior."
+            --body "The Release workflow completed successfully on dev. Merge this PR after validating the pre-release on device when the change affects runtime behavior." 2>&1)"; then
+            if grep -q "GitHub Actions is not permitted to create or approve pull requests" <<<"$output"; then
+              echo "::warning::GitHub Actions cannot create pull requests for this repository. Create dev -> main manually."
+              exit 0
+            fi
+            printf '%s\n' "$output" >&2
+            exit 1
+          fi
+
+          printf '%s\n' "$output"

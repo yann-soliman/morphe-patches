@@ -40,33 +40,6 @@ Les tests couvrent les adresses avec `+`, plusieurs adresses invalides et le com
 
 Le patch a aussi été appliqué au véritable APK Keepcool 1.8.21 et testé avec succès sur téléphone.
 
-## Keepcool: 30-day booking calendar
-
-### Fonction
-
-Keepcool limite normalement son sélecteur de dates à une fenêtre plus courte et ne construit pas toujours suffisamment de pages hebdomadaires pour atteindre J+30.
-
-Ce patch rend sélectionnables :
-
-- aujourd'hui ;
-- tous les jours suivants jusqu'à **J+30 inclus**.
-
-Les dates après J+30 restent désactivées.
-
-Il ne modifie ni le compte, ni l'abonnement, ni les requêtes de réservation.
-
-### Implémentation
-
-Le fingerprint identifie l'initialisation du composant de sélection de dates et la logique liée à `RoleParams.getMaxBookingVisibleDays()`, aux pages du calendrier et à l'adapter `ViewPager2`.
-
-Le patch ajoute les pages hebdomadaires nécessaires puis borne explicitement la dernière page à J+30.
-
-### Validation
-
-La régression J+30 vérifie les sept jours possibles de la semaine et confirme exactement les bornes de J à J+30.
-
-Le patch a été appliqué au véritable APK Keepcool 1.8.21, les DEX ont été reconstruits avec succès et le fonctionnement du calendrier a été confirmé sur téléphone.
-
 ## Keepcool: booking availability dots
 
 ### Fonction

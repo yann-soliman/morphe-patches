@@ -14,7 +14,7 @@ feature branch -> dev -> pre-release -> device test -> main -> stable release
 4. CI must compile the bundle and pass the regression tests.
 5. Merge to `dev` to publish a pre-release.
 6. Test the pre-release on a real device when the change affects runtime behavior.
-7. Merge the automatically opened `dev -> main` pull request to publish the stable release.
+7. Merge the `dev -> main` pull request to publish the stable release. It is opened automatically when repository settings allow GitHub Actions to create pull requests; otherwise create it manually.
 
 ## Commit types
 
