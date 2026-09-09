@@ -41,6 +41,13 @@ def main() -> None:
     if leaked:
         raise SystemExit(f"calendar classes leaked into public MPP: {leaked}")
     if missing:
+        interesting = sorted(
+            name for name in personal_entries
+            if "keepcool" in name.lower() or name.endswith((".dex", ".jar", ".class"))
+        )
+        print("Personal MPP relevant entries:", file=sys.stderr)
+        for name in interesting[:200]:
+            print(f"  {name}", file=sys.stderr)
         raise SystemExit(f"calendar classes missing from personal MPP: {missing}")
 
     print("MPP contents: PASS")
