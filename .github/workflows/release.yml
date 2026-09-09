@@ -51,6 +51,12 @@ jobs:
           GITHUB_ACTOR: ${{ github.actor }}
         run: ./tools/check.sh
 
+      - name: Prepare public release build
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_ACTOR: ${{ github.actor }}
+        run: ./build-local.sh
+
       - name: Install release dependencies
         run: npm ci
 
