@@ -29,6 +29,21 @@ run_logged() {
 }
 
 cd "$ROOT"
-run_logged "Gradle build + bundle" build.log "$ROOT/build-local.sh"
+
+run_logged "Public Gradle build + bundle" public-build.log "$ROOT/build-local.sh"
+run_logged "Public bundle metadata" public-list.log \
+  env PATCH_LIST_OUTPUT="$WORK/public-patches-list.json" \
+  "$ROOT/gradlew" generatePatchesList --no-build-cache
+
+run_logged "Personal Gradle build + bundle" personal-build.log \
+  "$ROOT/build-local.sh" -PpersonalBundle=true
+run_logged "Personal bundle metadata" personal-list.log \
+  env PATCH_LIST_OUTPUT="$WORK/personal-patches-list.json" \
+  "$ROOT/gradlew" -PpersonalBundle=true generatePatchesList --no-build-cache
+
+run_logged "Bundle visibility" visibility.log \
+  python3 "$ROOT/tools/verify_bundle_visibility.py" \
+  "$WORK/public-patches-list.json" "$WORK/personal-patches-list.json"
+
 run_logged "Repository regression tests" tests.log "$ROOT/tools/test.sh"
 printf 'Repository check: PASS\n'
