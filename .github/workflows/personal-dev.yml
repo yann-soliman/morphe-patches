@@ -1,13 +1,7 @@
 name: Personal dev bundle
 
 on:
-  push:
-    branches: [dev]
-    paths: [.github/workflows/personal-dev.yml]
-  workflow_run:
-    workflows: [Release]
-    branches: [dev]
-    types: [completed]
+  workflow_call:
   workflow_dispatch:
 
 permissions:
@@ -20,7 +14,6 @@ concurrency:
 
 jobs:
   publish:
-    if: ${{ github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success' }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
