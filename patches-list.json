@@ -1,6 +1,6 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "1.3.0-dev.2",
+  "version": "1.3.0-dev.3",
   "patches": [
     {
       "name": "Keepcool: allow plus in email",
@@ -82,7 +82,7 @@
     },
     {
       "name": "Meteo Consult: hide forecast end subscription prompt",
-      "description": "Stop opening the subscription screen when reaching the end of available hourly forecasts. Does not unlock or extend forecasts. Meteo Consult 1.1.4 only.",
+      "description": "Stop the forecast end subscription prompt and the startup Play installation check for the locally signed app. Does not unlock or extend forecasts. Meteo Consult 1.1.4 only.",
       "default": true,
       "dependencies": [],
       "compatiblePackages": [

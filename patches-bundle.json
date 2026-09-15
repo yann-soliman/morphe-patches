@@ -1,7 +1,7 @@
 {
-  "created_at": "2026-09-15T17:17:26",
-  "description": "## [1.3.0-dev.2](https://github.com/yann-soliman/morphe-patches/compare/v1.3.0-dev.1...v1.3.0-dev.2) (2026-09-15)\n\n### ✨ New Features\n\n* **meteoconsult:** suppress automatic forecast end subscription prompt ([a3dc07e](https://github.com/yann-soliman/morphe-patches/commit/a3dc07ee7d860a7ce8fbe2286ee0e12b750ef0aa))",
-  "download_url": "https://github.com/yann-soliman/morphe-patches/releases/download/v1.3.0-dev.2/patches-1.3.0-dev.2.mpp",
+  "created_at": "2026-09-15T17:32:37",
+  "description": "## [1.3.0-dev.3](https://github.com/yann-soliman/morphe-patches/compare/v1.3.0-dev.2...v1.3.0-dev.3) (2026-09-15)\n\n### 🐛 Bug Fixes\n\n* **meteoconsult:** prevent Play redirect on local startup ([8194186](https://github.com/yann-soliman/morphe-patches/commit/819418658293e87c1a608beb165589aa6390bbfc))",
+  "download_url": "https://github.com/yann-soliman/morphe-patches/releases/download/v1.3.0-dev.3/patches-1.3.0-dev.3.mpp",
   "signature_download_url": "",
-  "version": "1.3.0-dev.2"
+  "version": "1.3.0-dev.3"
 }

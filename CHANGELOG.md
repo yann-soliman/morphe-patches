@@ -1,3 +1,9 @@
+## [1.3.0-dev.3](https://github.com/yann-soliman/morphe-patches/compare/v1.3.0-dev.2...v1.3.0-dev.3) (2026-09-15)
+
+### 🐛 Bug Fixes
+
+* **meteoconsult:** prevent Play redirect on local startup ([8194186](https://github.com/yann-soliman/morphe-patches/commit/819418658293e87c1a608beb165589aa6390bbfc))
+
 ## [1.3.0-dev.2](https://github.com/yann-soliman/morphe-patches/compare/v1.3.0-dev.1...v1.3.0-dev.2) (2026-09-15)
 
 ### ✨ New Features
