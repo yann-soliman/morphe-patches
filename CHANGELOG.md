@@ -1,3 +1,10 @@
+## [1.3.0-dev.4](https://github.com/yann-soliman/morphe-patches/compare/v1.3.0-dev.3...v1.3.0-dev.4) (2026-09-15)
+
+### ✨ New Features
+
+* **meteoconsult:** remove ads and subscription promotions ([363a84c](https://github.com/yann-soliman/morphe-patches/commit/363a84cab77bc5a38e610c19c08e1d9e50f96217))
+* **meteoconsult:** remove ads and subscription promotions ([#18](https://github.com/yann-soliman/morphe-patches/issues/18)) ([1ea23f4](https://github.com/yann-soliman/morphe-patches/commit/1ea23f44750753e0a0996cbb34e161a9a3a7b357))
+
 ## [1.3.0-dev.3](https://github.com/yann-soliman/morphe-patches/compare/v1.3.0-dev.2...v1.3.0-dev.3) (2026-09-15)
 
 ### 🐛 Bug Fixes
