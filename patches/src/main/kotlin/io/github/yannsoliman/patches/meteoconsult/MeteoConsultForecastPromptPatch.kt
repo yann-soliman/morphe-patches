@@ -7,6 +7,11 @@ import app.morphe.patcher.string
 import app.morphe.patcher.extensions.InstructionExtensions.replaceInstruction
 import app.morphe.patcher.patch.*
 import com.android.tools.smali.dexlib2.Opcode
+import com.android.tools.smali.dexlib2.iface.instruction.NarrowLiteralInstruction
+import com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction
+
+private const val LICENSE_PROVIDER = "Lcom/pairip/licensecheck/LicenseContentProvider;"
+private const val LICENSE_CLIENT = "Lcom/pairip/licensecheck/LicenseClient;"
 
 private fun endEvent(label: String) = Fingerprint(
     name = "toString",
@@ -18,7 +23,7 @@ private fun endEvent(label: String) = Fingerprint(
 @Suppress("unused")
 val meteoConsultForecastPromptPatch = bytecodePatch(
     name = "Meteo Consult: hide forecast end subscription prompt",
-    description = "Stop opening the subscription screen when reaching the end of available hourly forecasts. Does not unlock or extend forecasts. Meteo Consult 1.1.4 only."
+    description = "Stop the forecast end subscription prompt and the startup Play installation check for the locally signed app. Does not unlock or extend forecasts. Meteo Consult 1.1.4 only."
 ) {
     compatibleWith(Compatibility(
         name = "Meteo Consult",
@@ -27,6 +32,30 @@ val meteoConsultForecastPromptPatch = bytecodePatch(
         targets = listOf(AppTarget(version = "1.1.4"))
     ))
     execute {
+        // This provider runs before the app UI. Its Play installation check can
+        // redirect a locally installed/re-signed build to the Play Store.
+        val startup = Fingerprint(
+            name = "onCreate",
+            returnType = "Z",
+            parameters = emptyList(),
+            custom = { method, _ -> method.definingClass == LICENSE_PROVIDER },
+            filters = listOf(
+                methodCall(definingClass = LICENSE_CLIENT, name = "<init>",
+                    parameters = listOf("Landroid/content/Context;"), returnType = "V"),
+                methodCall(definingClass = LICENSE_CLIENT, name = "initializeLicenseCheck",
+                    parameters = emptyList(), returnType = "V")
+            )
+        ).matchAll(1..1).single()
+        val startupInstructions = startup.method.implementation!!.instructions.toList()
+        check(startupInstructions.map { it.opcode } == listOf(
+            Opcode.NEW_INSTANCE, Opcode.INVOKE_VIRTUAL, Opcode.MOVE_RESULT_OBJECT,
+            Opcode.INVOKE_DIRECT, Opcode.INVOKE_VIRTUAL, Opcode.CONST_4, Opcode.RETURN
+        )) { "Unexpected Play installation provider layout" }
+        check(startup.instructionMatches.map { it.index } == listOf(3, 4))
+        check((startupInstructions[5] as NarrowLiteralInstruction).narrowLiteral == 1)
+        check((startupInstructions[5] as OneRegisterInstruction).registerA ==
+            (startupInstructions[6] as OneRegisterInstruction).registerA)
+
         // Resolve semantic event classes instead of depending on obfuscated names.
         val bulletin = endEvent("BulletinEndReached")
             .matchAll(1..1).single().method.definingClass
@@ -70,5 +99,8 @@ val meteoConsultForecastPromptPatch = bytecodePatch(
         // The ignored-result callback only opens the subscription screen.
         // Keep restriction checks, navigation, comparator handling and API requests intact.
         callback.method.replaceInstruction(hits[3].index, "nop")
+        // All targets have been validated. Keep the provider and its true return,
+        // suppress only its asynchronous startup check. Purchasely/Billing is untouched.
+        startup.method.replaceInstruction(4, "nop")
     }
 }

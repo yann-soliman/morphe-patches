@@ -11,6 +11,17 @@ Il ne change ni la limite de l'API, ni les heures reçues, ni le statut du compt
 Après la dernière heure disponible, les données peuvent donc rester vides.
 Le comparateur et les autres accès à l'abonnement conservent leur comportement.
 
+La version initiale du patch a été signalée comme redirigeant vers Google Play au
+démarrage. L'APK enregistre `LicenseContentProvider`, qui déclenche le contrôle
+d'installation Play avant l'interface. Un refus provoque l'envoi du PendingIntent
+fourni par Play puis la fermeture de l'application. Ce chemin correspond au symptôme,
+mais aucun log du téléphone n'a été fourni pour le confirmer.
+
+Le patch désactive aussi cet appel de démarrage pour permettre l'utilisation de
+l'application signée et installée localement par Morphe. Le provider est conservé
+et son `onCreate` retourne toujours vrai. Les contrôles d'abonnement météo côté
+serveur et le SDK de facturation ne sont pas modifiés.
+
 ## Analyse de l'APK
 
 SHA-256 de l'APK de base :
@@ -23,10 +34,15 @@ SHA-256 de l'APK de base :
   l'état d'affichage de l'abonnement à vrai.
 - `ll/a` utilise cet état pour remplacer le bulletin par l'écran d'abonnement.
 
-Le seul changement est le remplacement par `nop` de l'appel `Function0.invoke`
+Le changement du bulletin est le remplacement par `nop` de l'appel `Function0.invoke`
 à l'offset 0x2c6 de `Lc0/i2;->invoke(Ljava/lang/Object;)Ljava/lang/Object;`
 dans `classes.dex`. Son résultat est ignoré et l'instruction suivante est un `goto`.
 L'appel du comparateur à 0x2f6 n'est pas modifié.
+
+Le correctif de démarrage remplace l'appel `LicenseClient.initializeLicenseCheck()V`
+à l'offset 0x12 du `LicenseContentProvider.onCreate()Z` par `nop`. Le nom du provider,
+les deux appels, les sept instructions et le retour vrai sont vérifiés avant édition.
+Les cibles du bulletin et du démarrage doivent toutes correspondre avant modification.
 
 Ces noms et offsets documentent l'analyse ; le patch sélectionne les classes
 par les chaînes `BulletinEndReached` et `ComparatorEndReached`, puis identifie
@@ -39,7 +55,8 @@ La compilation CI ne remplace pas un essai sur téléphone. Pour le test fonctio
 
 1. Dans l'application d'origine, ouvrir un lieu et dépasser la dernière heure disponible
    dans les prévisions horaires ; constater l'ouverture de l'abonnement.
-2. Appliquer ce patch au XAPK 1.1.4 avec Morphe et refaire le même parcours.
+2. Repartir du XAPK original 1.1.4, appliquer ce patch avec Morphe, vérifier que
+   l'application démarre sans renvoi vers Play Store puis refaire le même parcours.
 3. Vérifier que le bulletin reste affiché, même si aucune donnée supplémentaire n'apparaît.
 4. Revenir aux premières heures, changer de lieu puis relancer l'application.
 5. Vérifier que l'accès volontaire à l'abonnement depuis le compte fonctionne toujours.
