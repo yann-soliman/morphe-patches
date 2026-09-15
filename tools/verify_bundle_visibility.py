@@ -4,6 +4,7 @@ import sys
 from pathlib import Path
 
 PUBLIC_PATCHES = {
+    "Marine Weather: remove forecast subscription screen",
     "Keepcool: allow plus in email",
     "Keepcool: booking availability dots",
 }
