@@ -1,3 +1,9 @@
+## [1.3.0-dev.2](https://github.com/yann-soliman/morphe-patches/compare/v1.3.0-dev.1...v1.3.0-dev.2) (2026-09-15)
+
+### ✨ New Features
+
+* **meteoconsult:** suppress automatic forecast end subscription prompt ([a3dc07e](https://github.com/yann-soliman/morphe-patches/commit/a3dc07ee7d860a7ce8fbe2286ee0e12b750ef0aa))
+
 ## [1.3.0-dev.1](https://github.com/yann-soliman/morphe-patches/compare/v1.2.1...v1.3.0-dev.1) (2026-09-15)
 
 ### ✨ New Features
