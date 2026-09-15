@@ -5,6 +5,8 @@ from pathlib import Path
 
 PUBLIC_PATCHES = {
     "Meteo Consult: hide forecast end subscription prompt",
+    "Meteo Consult: remove advertisements",
+    "Meteo Consult: disable subscription promotions",
     "Marine Weather: remove forecast subscription screen",
     "Keepcool: allow plus in email",
     "Keepcool: booking availability dots",
