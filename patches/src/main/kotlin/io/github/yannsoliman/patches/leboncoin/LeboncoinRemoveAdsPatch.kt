@@ -15,18 +15,21 @@ import com.android.tools.smali.dexlib2.iface.instruction.ReferenceInstruction
 import com.android.tools.smali.dexlib2.iface.instruction.RegisterRangeInstruction
 import com.android.tools.smali.dexlib2.iface.reference.MethodReference
 
-private const val AD_FREE_COMBINER = "Lmy0;"
+private val AD_FREE_COMBINERS = setOf("Lmy0;", "Loy0;")
 
 @Suppress("unused")
 val leboncoinRemoveAdsPatch = bytecodePatch(
     name = "Leboncoin: remove ads",
-    description = "Use Leboncoin's built-in ad-free paths to suppress banners, native ads and interstitials. Leboncoin 100.124.1 only.",
+    description = "Use Leboncoin's built-in ad-free paths to suppress banners, native ads and interstitials. Supports Leboncoin 100.124.1 and 100.125.0.",
 ) {
     compatibleWith(Compatibility(
         name = "Leboncoin",
         packageName = "fr.leboncoin",
         apkFileType = ApkFileType.XAPK,
-        targets = listOf(AppTarget(version = "100.124.1")),
+        targets = listOf(
+            AppTarget(version = "100.124.1"),
+            AppTarget(version = "100.125.0"),
+        ),
     ))
 
     execute {
@@ -39,7 +42,6 @@ val leboncoinRemoveAdsPatch = bytecodePatch(
         // synthetic class. Match both the exact class for this app version and
         // the distinctive time-window calculation before changing anything.
         val entitlementCombiner = Fingerprint(
-            definingClass = AD_FREE_COMBINER,
             name = "invokeSuspend",
             returnType = "Ljava/lang/Object;",
             parameters = listOf("Ljava/lang/Object;"),
@@ -57,6 +59,7 @@ val leboncoinRemoveAdsPatch = bytecodePatch(
                     returnType = "Ljava/lang/Boolean;",
                 ),
             ),
+            custom = { method, _ -> method.definingClass in AD_FREE_COMBINERS },
         ).matchAll(1..1).single()
 
         val instructions = entitlementCombiner.method.implementation!!.instructions.toList()
@@ -76,15 +79,14 @@ val leboncoinRemoveAdsPatch = bytecodePatch(
         val valueOf = valueOfMatches.single()
         val falseIndex = valueOf.index - 1
         val trueIndex = valueOf.index - 3
-        check(trueIndex >= 0 && valueOf.index + 2 < instructions.size)
-        check(instructions.map { it.opcode }.drop(trueIndex).take(7) == listOf(
+        check(trueIndex >= 0 && valueOf.index + 1 < instructions.size)
+        check(instructions.map { it.opcode }.drop(trueIndex).take(6) == listOf(
             Opcode.CONST_4,
             Opcode.GOTO,
             Opcode.CONST_4,
             Opcode.INVOKE_STATIC,
             Opcode.MOVE_RESULT_OBJECT,
             Opcode.RETURN_OBJECT,
-            Opcode.NOP,
         )) { "Unexpected ad-free entitlement result layout" }
 
         val trueInstruction = instructions[trueIndex] as? NarrowLiteralInstruction
