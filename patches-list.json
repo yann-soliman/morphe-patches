@@ -1,6 +1,6 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "1.4.0-dev.1",
+  "version": "1.4.0-dev.2",
   "patches": [
     {
       "name": "Keepcool: 30-day booking calendar",
@@ -82,7 +82,7 @@
     },
     {
       "name": "Leboncoin: remove ads",
-      "description": "Use Leboncoin's built-in ad-free paths to suppress banners, native ads and interstitials. Leboncoin 100.124.1 only.",
+      "description": "Use Leboncoin's built-in ad-free paths to suppress banners, native ads and interstitials. Supports Leboncoin 100.124.1 and 100.125.0.",
       "default": true,
       "dependencies": [],
       "compatiblePackages": [
@@ -96,6 +96,13 @@
           "targets": [
             {
               "version": "100.124.1",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "100.125.0",
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": null,
