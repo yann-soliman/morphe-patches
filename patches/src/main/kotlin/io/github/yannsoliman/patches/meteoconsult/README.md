@@ -10,6 +10,18 @@ correctifs précédents dans un seul patch sélectionnable. Il désactive l'appe
 ouvre l'abonnement en réponse à `BulletinEndReached`, neutralise les emplacements
 publicitaires et bloque les promotions automatiques du paywall.
 
+Deux options indépendantes complètent ce nettoyage :
+
+- **Meteo Consult: privacy mode** désactive les trois indicateurs d'analytics de
+  la configuration distante, l'envoi des événements applicatifs et de Wysistat,
+  l'enregistrement de Crashlytics, le démarrage de Purchasely et l'alimentation du
+  gestionnaire publicitaire. Firebase Messaging, la géolocalisation et les appels
+  météo restent actifs. Le CMP reste présent : le patch ne simule donc jamais un
+  consentement. Les fonctions d'achat peuvent être indisponibles avec ce patch.
+- **Meteo Consult: disable video autoplay** prépare normalement le média mais
+  laisse le lecteur météo en pause lors de son ouverture. Le bouton de lecture
+  continue de fonctionner. Les vidéos publicitaires relèvent du patch de nettoyage.
+
 Il ne change ni la limite de l'API, ni les heures reçues, ni le statut du compte.
 Après la dernière heure disponible, les données peuvent donc rester vides.
 Le comparateur et les autres accès à l'abonnement conservent leur comportement.
@@ -55,6 +67,16 @@ Pour les promotions, `ConfigurationContent.isPopupPaywallActive` renvoie toujour
 `INTERSTITIAL_PROMO_PAYWALL` par un retour nul dans `km/q.b`, afin qu'une réponse
 de configuration incompatible ne puisse pas réactiver la sollicitation.
 
+Le mode confidentialité force `isAnalyticsActive`, `isAnalyticsNcActive` et
+`isWysistatActive` à `false`, neutralise le répartiteur d'événements applicatifs,
+empêche l'enregistrement du composant Crashlytics et ignore les démarrages réseau
+de Purchasely et du gestionnaire publicitaire. Il ne modifie ni le service FCM ni
+les permissions de localisation.
+
+Le lecteur vidéo Media3 est initialisé dans `mq/f.invokeSuspend`. L'application
+prépare la source puis appelle `playWhenReady(true)`. Le patch d'autoplay conserve
+la préparation et remplace uniquement ce booléen par `false`.
+
 Le changement du bulletin est le remplacement par `nop` de l'appel `Function0.invoke`
 à l'offset 0x2c6 de `Lc0/i2;->invoke(Ljava/lang/Object;)Ljava/lang/Object;`
 dans `classes.dex`. Son résultat est ignoré et l'instruction suivante est un `goto`.
@@ -86,8 +108,18 @@ La compilation CI ne remplace pas un essai sur téléphone. Pour le test fonctio
    du paywall ne doit apparaître.
 7. Vérifier que l'accès volontaire à l'abonnement depuis le compte fonctionne toujours.
 
-Ce patch regroupe les trois correctifs METEO CONSULT. Il doit être sélectionné seul
-pour cette application. La limite de 24 heures côté serveur reste inchangée.
+Pour valider le mode confidentialité, appliquer aussi ce patch et vérifier que les
+prévisions, la position courante et les alertes fonctionnent toujours. L'absence
+effective de requêtes analytics, Crashlytics, Purchasely et publicitaires se vérifie
+avec un proxy réseau ou les journaux Android. L'accès volontaire à l'achat peut ne
+plus fonctionner tant que ce patch est sélectionné.
+
+Pour valider l'autoplay, ouvrir une vidéo météo depuis l'application : la première
+image doit rester en pause, puis la lecture doit démarrer après une action manuelle.
+
+Le patch de nettoyage regroupe les trois anciens correctifs METEO CONSULT. Les deux
+nouveaux patchs sont indépendants et peuvent être combinés avec lui. La limite de
+24 heures côté serveur reste inchangée.
 
 Publier sur `dev` et tester la pré-release avant promotion vers `main`.
 Le patch Marine existant est conservé.
