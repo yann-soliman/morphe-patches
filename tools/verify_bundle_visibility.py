@@ -5,6 +5,7 @@ from pathlib import Path
 
 PUBLIC_PATCHES = {
     "Leboncoin: remove ads",
+    "Leboncoin: privacy mode",
     "Meteo Consult: remove ads and subscription prompts",
     "Meteo Consult: disable video autoplay",
     "Keepcool: allow plus in email",
