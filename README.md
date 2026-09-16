@@ -17,6 +17,8 @@ Ajouter cette source n'applique pas tous les patches : vous choisissez ceux à u
 | Application | Patch | Fonction |
 | --- | --- | --- |
 | METEO CONSULT 1.1.4 | **Meteo Consult: remove ads and subscription prompts** | Supprime les publicités et les sollicitations automatiques d'abonnement, y compris en fin de prévisions. |
+| METEO CONSULT 1.1.4 | **Meteo Consult: privacy mode** | Coupe les analytics, les rapports de crash et le démarrage des SDK publicitaire et de paywall, sans désactiver la localisation ni les alertes météo. |
+| METEO CONSULT 1.1.4 | **Meteo Consult: disable video autoplay** | Ouvre les vidéos météo en pause et conserve la lecture manuelle. |
 | Météo Marine 7.1.3 | **Marine Weather: remove forecast subscription screen** | Retire la limite horaire locale et l'écran d'abonnement du bulletin. Affiche uniquement les données reçues du serveur. |
 | Keepcool 1.8.21 | **Keepcool: allow plus in email** | Autorise les adresses contenant un `+` avant le `@` sans modifier l'adresse envoyée au serveur. |
 | Keepcool 1.8.21 | **Keepcool: booking availability dots** | Affiche une pastille verte sur les dates ayant au moins un créneau avec une place disponible. |
