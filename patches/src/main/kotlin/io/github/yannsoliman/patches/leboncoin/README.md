@@ -2,7 +2,7 @@
 
 ## Remove ads
 
-Target: Leboncoin `100.124.1` (`fr.leboncoin`, XAPK).
+Targets: Leboncoin `100.124.1` and `100.125.0` (`fr.leboncoin`, XAPK).
 
 Leboncoin exposes an application-owned advertising entitlement as a shared
 Boolean flow. The home, search, ad-detail and interstitial advertising paths
