@@ -107,4 +107,3 @@ démarrage sur appareil. Le patch autoplay reste indépendant et peut être comb
 avec le nettoyage. La limite de 24 heures côté serveur reste inchangée.
 
 Publier sur `dev` et tester la pré-release avant promotion vers `main`.
-Le patch Marine existant est conservé.
