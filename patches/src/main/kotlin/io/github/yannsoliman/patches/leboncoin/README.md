@@ -26,3 +26,30 @@ Recommended device checks:
 - classified-ad detail pages;
 - repeated navigation that would normally show an interstitial;
 - signed-in and signed-out sessions.
+
+## Privacy mode
+
+Target: Leboncoin `100.125.0` (`fr.leboncoin`, XAPK).
+
+The patch suppresses behavioral analytics and attribution events at their
+central dispatch points:
+
+- Firebase Analytics events and user properties;
+- Piano Analytics events;
+- Adjust conversion events;
+- mParticle behavior events and screen views;
+- Datadog telemetry through its application-owned `isEnabled` gate.
+
+Firebase, Adjust, mParticle, Batch and Didomi remain initialized. This preserves
+Remote Config, consent, push notifications and integrations that share those
+SDKs while preventing the targeted event dispatchers from transmitting data.
+The patch does not alter API requests required for classifieds, accounts,
+messaging, payments or remote feature configuration.
+
+Recommended device checks:
+
+- cold start while signed out and signed in;
+- home, search and classified-ad detail navigation;
+- account login and logout;
+- messaging and push-notification opening;
+- consent and privacy settings screens.
