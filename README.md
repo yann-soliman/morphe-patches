@@ -16,9 +16,7 @@ Ajouter cette source n'applique pas tous les patches : vous choisissez ceux à u
 
 | Application | Patch | Fonction |
 | --- | --- | --- |
-| METEO CONSULT 1.1.4 | **Meteo Consult: hide forecast end subscription prompt** | Empêche l'ouverture automatique de l'abonnement en fin de prévisions horaires, sans débloquer de données. |
-| METEO CONSULT 1.1.4 | **Meteo Consult: remove advertisements** | Supprime les publicités visibles sous forme de bannières, vidéos et interstitiels. |
-| METEO CONSULT 1.1.4 | **Meteo Consult: disable subscription promotions** | Désactive les sollicitations automatiques du paywall ; les écrans d'abonnement ouverts volontairement restent disponibles. |
+| METEO CONSULT 1.1.4 | **Meteo Consult: remove ads and subscription prompts** | Supprime les publicités et les sollicitations automatiques d'abonnement, y compris en fin de prévisions. |
 | Météo Marine 7.1.3 | **Marine Weather: remove forecast subscription screen** | Retire la limite horaire locale et l'écran d'abonnement du bulletin. Affiche uniquement les données reçues du serveur. |
 | Keepcool 1.8.21 | **Keepcool: allow plus in email** | Autorise les adresses contenant un `+` avant le `@` sans modifier l'adresse envoyée au serveur. |
 | Keepcool 1.8.21 | **Keepcool: booking availability dots** | Affiche une pastille verte sur les dates ayant au moins un créneau avec une place disponible. |
