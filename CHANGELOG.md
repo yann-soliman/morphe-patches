@@ -1,3 +1,9 @@
+## [1.3.0-dev.8](https://github.com/yann-soliman/morphe-patches/compare/v1.3.0-dev.7...v1.3.0-dev.8) (2026-09-16)
+
+### 🐛 Bug Fixes
+
+* **meteoconsult:** preserve required SDK startup ([4ef9264](https://github.com/yann-soliman/morphe-patches/commit/4ef9264bc0211d36a8f30cbcf11dbd41f94d3924))
+
 ## [1.3.0-dev.7](https://github.com/yann-soliman/morphe-patches/compare/v1.3.0-dev.6...v1.3.0-dev.7) (2026-09-16)
 
 ### 🐛 Bug Fixes
