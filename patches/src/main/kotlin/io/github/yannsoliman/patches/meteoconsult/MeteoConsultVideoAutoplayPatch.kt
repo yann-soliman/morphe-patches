@@ -2,16 +2,13 @@ package io.github.yannsoliman.patches.meteoconsult
 
 import app.morphe.patcher.Fingerprint
 import app.morphe.patcher.methodCall
-import app.morphe.patcher.extensions.InstructionExtensions.replaceInstruction
+import app.morphe.patcher.extensions.InstructionExtensions.addInstruction
 import app.morphe.patcher.patch.ApkFileType
 import app.morphe.patcher.patch.AppTarget
 import app.morphe.patcher.patch.Compatibility
 import app.morphe.patcher.patch.bytecodePatch
-import com.android.tools.smali.dexlib2.Opcode
 import com.android.tools.smali.dexlib2.iface.instruction.FiveRegisterInstruction
 import com.android.tools.smali.dexlib2.iface.instruction.Instruction
-import com.android.tools.smali.dexlib2.iface.instruction.NarrowLiteralInstruction
-import com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction
 import com.android.tools.smali.dexlib2.iface.instruction.ReferenceInstruction
 import com.android.tools.smali.dexlib2.iface.instruction.RegisterRangeInstruction
 import com.android.tools.smali.dexlib2.iface.reference.MethodReference
@@ -92,26 +89,15 @@ val meteoConsultVideoAutoplayPatch = bytecodePatch(
         check(references.all { it.returnType == "V" })
 
         val playWhenReady = calls[2]
-        val instructions = playerSetup.method.implementation!!.instructions.toList()
-        check(playWhenReady.index > 0) { "playWhenReady has no preceding instruction" }
-
         val invokeRegisters = invokeRegisters(playWhenReady.instruction)
         check(invokeRegisters.size == 2) { "Unexpected playWhenReady register count" }
         val playWhenReadyRegister = invokeRegisters[1]
 
-        val producer = instructions[playWhenReady.index - 1]
-        check(producer.opcode == Opcode.CONST_4) {
-            "playWhenReady is not immediately initialized with const/4"
-        }
-        check((producer as? NarrowLiteralInstruction)?.narrowLiteral == 1) {
-            "playWhenReady is not initialized to true"
-        }
-        check((producer as? OneRegisterInstruction)?.registerA == playWhenReadyRegister) {
-            "playWhenReady constant does not feed the player call"
-        }
-
-        playerSetup.method.replaceInstruction(
-            playWhenReady.index - 1,
+        // The boolean register is initialized earlier and reused by the player
+        // setup in some DEX layouts. Override it at the call site instead of
+        // assuming its producer is the immediately preceding instruction.
+        playerSetup.method.addInstruction(
+            playWhenReady.index,
             "const/4 v$playWhenReadyRegister, 0x0",
         )
     }
