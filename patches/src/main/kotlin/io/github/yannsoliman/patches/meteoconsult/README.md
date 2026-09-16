@@ -13,11 +13,11 @@ publicitaires et bloque les promotions automatiques du paywall.
 Deux options indépendantes complètent ce nettoyage :
 
 - **Meteo Consult: privacy mode** désactive les trois indicateurs d'analytics de
-  la configuration distante, l'envoi des événements applicatifs et de Wysistat,
-  l'enregistrement de Crashlytics, le démarrage de Purchasely et l'alimentation du
-  gestionnaire publicitaire. Firebase Messaging, la géolocalisation et les appels
-  météo restent actifs. Le CMP reste présent : le patch ne simule donc jamais un
-  consentement. Les fonctions d'achat peuvent être indisponibles avec ce patch.
+  la configuration distante ainsi que l'envoi des événements applicatifs et de
+  Wysistat. Les initialisations de Crashlytics, Purchasely et du gestionnaire
+  publicitaire sont conservées car l'application dépend de leur état au démarrage.
+  Firebase Messaging, la géolocalisation et les appels météo restent actifs. Le CMP
+  reste présent : le patch ne simule donc jamais un consentement.
 - **Meteo Consult: disable video autoplay** prépare normalement le média mais
   laisse le lecteur météo en pause lors de son ouverture. Le bouton de lecture
   continue de fonctionner. Les vidéos publicitaires relèvent du patch de nettoyage.
@@ -69,9 +69,8 @@ de configuration incompatible ne puisse pas réactiver la sollicitation.
 
 Le mode confidentialité force `isAnalyticsActive`, `isAnalyticsNcActive` et
 `isWysistatActive` à `false`, neutralise le répartiteur d'événements applicatifs,
-empêche l'enregistrement du composant Crashlytics et ignore les démarrages réseau
-de Purchasely et du gestionnaire publicitaire. Il ne modifie ni le service FCM ni
-les permissions de localisation.
+mais conserve les initialisations SDK attendues par l'écran principal. Il ne modifie
+ni le service FCM ni les permissions de localisation.
 
 Le lecteur vidéo Media3 est initialisé dans `mq/f.invokeSuspend`. L'application
 prépare la source puis appelle `playWhenReady(true)`. Le patch d'autoplay conserve
@@ -110,9 +109,9 @@ La compilation CI ne remplace pas un essai sur téléphone. Pour le test fonctio
 
 Pour valider le mode confidentialité, appliquer aussi ce patch et vérifier que les
 prévisions, la position courante et les alertes fonctionnent toujours. L'absence
-effective de requêtes analytics, Crashlytics, Purchasely et publicitaires se vérifie
-avec un proxy réseau ou les journaux Android. L'accès volontaire à l'achat peut ne
-plus fonctionner tant que ce patch est sélectionné.
+effective de requêtes d'analytics applicatifs et Wysistat se vérifie avec un proxy
+réseau ou les journaux Android. Crashlytics et les initialisations SDK ne sont plus
+neutralisés par ce patch afin de préserver le démarrage de l'application.
 
 Pour valider l'autoplay, ouvrir une vidéo météo depuis l'application : la première
 image doit rester en pause, puis la lecture doit démarrer après une action manuelle.
