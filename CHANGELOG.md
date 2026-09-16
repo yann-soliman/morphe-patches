@@ -1,3 +1,11 @@
+## [1.3.0-dev.5](https://github.com/yann-soliman/morphe-patches/compare/v1.3.0-dev.4...v1.3.0-dev.5) (2026-09-16)
+
+### 🐛 Bug Fixes
+
+* **meteoconsult:** consolidate cleanup into one patch ([b01e7ba](https://github.com/yann-soliman/morphe-patches/commit/b01e7ba4381d2f9a2a5418f9fc868a7cf17de4e5))
+* **meteoconsult:** consolidate cleanup into one patch ([#19](https://github.com/yann-soliman/morphe-patches/issues/19)) ([e471ed7](https://github.com/yann-soliman/morphe-patches/commit/e471ed7574104752a51d27cf4d6a8ff29904a34b))
+* **meteoconsult:** remove obsolete duplicate source directory ([8b75b40](https://github.com/yann-soliman/morphe-patches/commit/8b75b405827524d816c6b549049402762fe482ae))
+
 ## [1.3.0-dev.4](https://github.com/yann-soliman/morphe-patches/compare/v1.3.0-dev.3...v1.3.0-dev.4) (2026-09-15)
 
 ### ✨ New Features
