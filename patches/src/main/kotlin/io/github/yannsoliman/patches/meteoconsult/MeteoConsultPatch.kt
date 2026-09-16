@@ -11,6 +11,8 @@ import app.morphe.patcher.patch.*
 import com.android.tools.smali.dexlib2.Opcode
 import com.android.tools.smali.dexlib2.iface.instruction.NarrowLiteralInstruction
 import com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction
+import com.android.tools.smali.dexlib2.iface.instruction.ReferenceInstruction
+import com.android.tools.smali.dexlib2.iface.reference.MethodReference
 
 private const val LICENSE_PROVIDER = "Lcom/pairip/licensecheck/LicenseContentProvider;"
 private const val LICENSE_CLIENT = "Lcom/pairip/licensecheck/LicenseClient;"
@@ -22,6 +24,8 @@ private const val AD = "Lcom/lachainemeteo/advertisingmanager/models/Ad;"
 private const val CONFIGURATION_CONTENT =
     "Lcom/meteoconsult/androidapp/network/model/configuration/ConfigurationContent;"
 private const val PROMOTION_VIEW_MODEL = "Lkm/q;"
+private const val APPLICATION = "Lcom/meteoconsult/androidapp/MeteoTerrestreApplication;"
+private const val CURRENT_OFFER_COORDINATOR = "Lsl/c;"
 
 private fun endEvent(label: String) = Fingerprint(
     name = "toString",
@@ -186,5 +190,50 @@ val meteoConsultPatch = bytecodePatch(
             promotionHit.index,
             "const/4 v$register, 0x0",
         )
+
+        // The launch-time trial offer (for example "0 € pendant 2 semaines")
+        // uses a separate CurrentOfferCoordinator and does not pass through the
+        // remote popup flag or the interstitial promotion decision above.
+        val currentOfferStartup = Fingerprint(
+            definingClass = APPLICATION,
+            name = "onCreate",
+            returnType = "V",
+            parameters = emptyList(),
+            filters = listOf(
+                fieldAccess(
+                    definingClass = APPLICATION,
+                    name = "d",
+                    type = CURRENT_OFFER_COORDINATOR,
+                    opcode = Opcode.IGET_OBJECT,
+                ),
+                methodCall(
+                    definingClass = "Ljava/util/concurrent/atomic/AtomicBoolean;",
+                    name = "compareAndSet",
+                    parameters = listOf("Z", "Z"),
+                    returnType = "Z",
+                ),
+            ),
+        ).matchAll(1..1).single()
+        val offerRead = currentOfferStartup.instructionMatches.first()
+        val applicationInstructions =
+            currentOfferStartup.method.implementation!!.instructions.toList()
+        val offerLaunches = applicationInstructions.withIndex().filter { (index, instruction) ->
+            if (index <= offerRead.index) return@filter false
+            val reference =
+                ((instruction as? ReferenceInstruction)?.reference as? MethodReference)
+                    ?: return@filter false
+            reference.definingClass == "Lkotlinx/coroutines/BuildersKt;" &&
+                reference.name == "launch\$default" &&
+                reference.returnType == "Lkotlinx/coroutines/Job;"
+        }
+        check(offerLaunches.size == 1) {
+            "Unexpected CurrentOfferCoordinator launch count: ${offerLaunches.size}"
+        }
+        val offerLaunch = offerLaunches.single()
+        check(offerLaunch.value.opcode == Opcode.INVOKE_STATIC_RANGE &&
+            offerLaunch.index + 1 < applicationInstructions.size &&
+            applicationInstructions[offerLaunch.index + 1].opcode == Opcode.RETURN_VOID
+        ) { "Unexpected CurrentOfferCoordinator launch layout" }
+        currentOfferStartup.method.replaceInstruction(offerLaunch.index, "nop")
     }
 }
