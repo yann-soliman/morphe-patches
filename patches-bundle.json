@@ -1,7 +1,7 @@
 {
-  "created_at": "2026-09-16T08:05:23",
-  "description": "## [1.3.0-dev.8](https://github.com/yann-soliman/morphe-patches/compare/v1.3.0-dev.7...v1.3.0-dev.8) (2026-09-16)\n\n### 🐛 Bug Fixes\n\n* **meteoconsult:** preserve required SDK startup ([4ef9264](https://github.com/yann-soliman/morphe-patches/commit/4ef9264bc0211d36a8f30cbcf11dbd41f94d3924))",
-  "download_url": "https://github.com/yann-soliman/morphe-patches/releases/download/v1.3.0-dev.8/patches-1.3.0-dev.8.mpp",
+  "created_at": "2026-09-16T10:52:13",
+  "description": "## [1.3.0-dev.9](https://github.com/yann-soliman/morphe-patches/compare/v1.3.0-dev.8...v1.3.0-dev.9) (2026-09-16)\n\n### 🐛 Bug Fixes\n\n* **meteoconsult:** suppress launch offer popup ([a1ebc8b](https://github.com/yann-soliman/morphe-patches/commit/a1ebc8bd1f8ac523afab9da2c4b460c922612800))",
+  "download_url": "https://github.com/yann-soliman/morphe-patches/releases/download/v1.3.0-dev.9/patches-1.3.0-dev.9.mpp",
   "signature_download_url": "",
-  "version": "1.3.0-dev.8"
+  "version": "1.3.0-dev.9"
 }

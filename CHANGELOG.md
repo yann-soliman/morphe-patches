@@ -1,3 +1,9 @@
+## [1.3.0-dev.9](https://github.com/yann-soliman/morphe-patches/compare/v1.3.0-dev.8...v1.3.0-dev.9) (2026-09-16)
+
+### 🐛 Bug Fixes
+
+* **meteoconsult:** suppress launch offer popup ([a1ebc8b](https://github.com/yann-soliman/morphe-patches/commit/a1ebc8bd1f8ac523afab9da2c4b460c922612800))
+
 ## [1.3.0-dev.8](https://github.com/yann-soliman/morphe-patches/compare/v1.3.0-dev.7...v1.3.0-dev.8) (2026-09-16)
 
 ### 🐛 Bug Fixes
