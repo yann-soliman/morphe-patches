@@ -1,3 +1,9 @@
+## [1.3.0](https://github.com/yann-soliman/morphe-patches/compare/v1.2.1...v1.3.0) (2026-09-16)
+
+### ✨ New Features
+
+* **meteoconsult:** add cleanup and video autoplay patches ([c574f52](https://github.com/yann-soliman/morphe-patches/commit/c574f529c4ee37470d0e6f9da642bc8e2922b4aa))
+
 ## [1.2.1](https://github.com/yann-soliman/morphe-patches/compare/v1.2.0...v1.2.1) (2026-09-09)
 
 ### 🐛 Bug Fixes
