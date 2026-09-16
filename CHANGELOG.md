@@ -1,3 +1,9 @@
+## [1.3.0-dev.10](https://github.com/yann-soliman/morphe-patches/compare/v1.3.0-dev.9...v1.3.0-dev.10) (2026-09-16)
+
+### 🐛 Bug Fixes
+
+* **marine:** remove ineffective forecast patch ([08c54e6](https://github.com/yann-soliman/morphe-patches/commit/08c54e6e3458ffd7cd5b205b2b505a091644f58a))
+
 ## [1.3.0-dev.9](https://github.com/yann-soliman/morphe-patches/compare/v1.3.0-dev.8...v1.3.0-dev.9) (2026-09-16)
 
 ### 🐛 Bug Fixes
