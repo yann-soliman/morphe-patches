@@ -1,3 +1,9 @@
+## [1.4.0-dev.2](https://github.com/yann-soliman/morphe-patches/compare/v1.4.0-dev.1...v1.4.0-dev.2) (2026-09-16)
+
+### ✨ New Features
+
+* **leboncoin:** support version 100.125.0 ([#27](https://github.com/yann-soliman/morphe-patches/issues/27)) ([7725b0e](https://github.com/yann-soliman/morphe-patches/commit/7725b0e344b0733f5f676c9f70b95df568440e80))
+
 ## [1.4.0-dev.1](https://github.com/yann-soliman/morphe-patches/compare/v1.3.0...v1.4.0-dev.1) (2026-09-16)
 
 ### 🐛 Bug Fixes
