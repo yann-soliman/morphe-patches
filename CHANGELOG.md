@@ -1,3 +1,9 @@
+## [1.3.0-dev.6](https://github.com/yann-soliman/morphe-patches/compare/v1.3.0-dev.5...v1.3.0-dev.6) (2026-09-16)
+
+### ✨ New Features
+
+* **meteoconsult:** add privacy and video controls ([22dea9f](https://github.com/yann-soliman/morphe-patches/commit/22dea9f24143f356fd2882f685e87f3cc6b9b715))
+
 ## [1.3.0-dev.5](https://github.com/yann-soliman/morphe-patches/compare/v1.3.0-dev.4...v1.3.0-dev.5) (2026-09-16)
 
 ### 🐛 Bug Fixes
