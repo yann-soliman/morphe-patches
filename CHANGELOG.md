@@ -1,3 +1,9 @@
+## [1.3.0-dev.7](https://github.com/yann-soliman/morphe-patches/compare/v1.3.0-dev.6...v1.3.0-dev.7) (2026-09-16)
+
+### 🐛 Bug Fixes
+
+* **meteoconsult:** set autoplay flag at call site ([31dd6b6](https://github.com/yann-soliman/morphe-patches/commit/31dd6b6a0ee53882a3304d891e034813862bb1c0))
+
 ## [1.3.0-dev.6](https://github.com/yann-soliman/morphe-patches/compare/v1.3.0-dev.5...v1.3.0-dev.6) (2026-09-16)
 
 ### ✨ New Features
