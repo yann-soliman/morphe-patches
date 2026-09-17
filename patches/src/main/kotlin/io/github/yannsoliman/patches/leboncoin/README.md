@@ -53,3 +53,30 @@ Recommended device checks:
 - account login and logout;
 - messaging and push-notification opening;
 - consent and privacy settings screens.
+
+## Persistent search filters
+
+Target: Leboncoin `100.125.0` (`fr.leboncoin`, XAPK).
+
+When a new search is opened without an explicit existing search identifier, the
+stock application loads the latest `SearchRequestModel` but copies only its
+location into an otherwise empty model. The patch keeps the complete previous
+model and clears its database identifier, so the next search is still stored as
+a new entry while retaining:
+
+- category and keywords;
+- location and radius;
+- seller and delivery choices;
+- price and category-specific dynamic filters;
+- sort order and other search toggles.
+
+Opening an existing recent or saved search by its identifier is unchanged.
+
+Recommended device checks:
+
+- configure several filters, run the search, return home and open a new search;
+- verify that category, keywords, location, price and sort are restored;
+- change the restored filters and verify that the previous recent search still
+  exists unchanged;
+- open a saved search and verify that its own criteria take priority;
+- fully stop and restart the application, then open a new search again.
