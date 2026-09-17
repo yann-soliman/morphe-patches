@@ -1,3 +1,9 @@
+## [1.5.0-dev.2](https://github.com/yann-soliman/morphe-patches/compare/v1.5.0-dev.1...v1.5.0-dev.2) (2026-09-17)
+
+### ✨ New Features
+
+* **leboncoin:** persist search filters ([#30](https://github.com/yann-soliman/morphe-patches/issues/30)) ([4549bcd](https://github.com/yann-soliman/morphe-patches/commit/4549bcd0863d40b9a93efa863c6290bd7d67518c))
+
 ## [1.5.0-dev.1](https://github.com/yann-soliman/morphe-patches/compare/v1.4.0...v1.5.0-dev.1) (2026-09-16)
 
 ### 🐛 Bug Fixes
