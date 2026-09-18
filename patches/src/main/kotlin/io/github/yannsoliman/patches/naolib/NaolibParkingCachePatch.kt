@@ -32,6 +32,8 @@ val naolibParkingCachePatch = bytecodePatch(
     name = "Naolib vélo: keep parking list",
     description = "Keep cached parking markers when the parking API returns an empty list. Naolib vélo 3.6.1 only.",
 ) {
+    dependsOn(naolibPatchedInstallPatch)
+
     compatibleWith(Compatibility(
         name = "Naolib vélo",
         packageName = "com.jcdecaux.vls.nantes",
