@@ -162,7 +162,7 @@ val naolibParkingCachePatch = bytecodePatch(
         method.addInstructions(
             mapperIndex + 3,
             """
-                sget-object v4, $NON_EMPTY_LIST_PREDICATE->a $NON_EMPTY_LIST_PREDICATE
+                sget-object v4, $NON_EMPTY_LIST_PREDICATE->a:$NON_EMPTY_LIST_PREDICATE
                 invoke-virtual {v0, v4}, $RX_OBSERVABLE->H($RX_PREDICATE)$RX_OBSERVABLE
                 move-result-object v0
             """.trimIndent(),
