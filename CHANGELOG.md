@@ -1,3 +1,10 @@
+## [1.6.0-dev.1](https://github.com/yann-soliman/morphe-patches/compare/v1.5.0...v1.6.0-dev.1) (2026-09-18)
+
+### ✨ New Features
+
+* **naolib:** preserve parking list on empty network responses ([f4f12d3](https://github.com/yann-soliman/morphe-patches/commit/f4f12d335a392654311cad6e92c069938f02e8e0))
+* **naolib:** remove local parking distance limit ([0b021de](https://github.com/yann-soliman/morphe-patches/commit/0b021de866d23b6735f8bcfc990a46be5855ec9f))
+
 ## [1.5.0](https://github.com/yann-soliman/morphe-patches/compare/v1.4.0...v1.5.0) (2026-09-17)
 
 ### 🐛 Bug Fixes
