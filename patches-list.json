@@ -1,6 +1,6 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "1.6.0-dev.2",
+  "version": "1.6.0-dev.3",
   "patches": [
     {
       "name": "Keepcool: allow plus in email",
@@ -195,7 +195,9 @@
       "name": "Naolib vélo: keep parking list",
       "description": "Keep cached parking markers when the parking API returns an empty list. Naolib vélo 3.6.1 only.",
       "default": true,
-      "dependencies": [],
+      "dependencies": [
+        "BytecodePatch"
+      ],
       "compatiblePackages": [
         {
           "packageName": "com.jcdecaux.vls.nantes",
@@ -221,7 +223,9 @@
       "name": "Naolib vélo: remove parking distance limit",
       "description": "Remove the client-side parking distance limit while preserving Naolib vélo's normal account, subscription and API flow. Naolib vélo 3.6.1 only.",
       "default": true,
-      "dependencies": [],
+      "dependencies": [
+        "BytecodePatch"
+      ],
       "compatiblePackages": [
         {
           "packageName": "com.jcdecaux.vls.nantes",

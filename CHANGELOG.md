@@ -1,3 +1,9 @@
+## [1.6.0-dev.3](https://github.com/yann-soliman/morphe-patches/compare/v1.6.0-dev.2...v1.6.0-dev.3) (2026-09-18)
+
+### 🐛 Bug Fixes
+
+* **naolib:** bypass Play installer check for patched builds ([85370fb](https://github.com/yann-soliman/morphe-patches/commit/85370fb49d2b391e78c1c6919a3ed9bd127b83ca))
+
 ## [1.6.0-dev.2](https://github.com/yann-soliman/morphe-patches/compare/v1.6.0-dev.1...v1.6.0-dev.2) (2026-09-18)
 
 ### 🐛 Bug Fixes
