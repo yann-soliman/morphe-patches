@@ -4,8 +4,6 @@ import sys
 from pathlib import Path
 
 PUBLIC_PATCHES = {
-    "Naolib vélo: remove parking distance limit",
-    "Naolib vélo: keep parking list",
     "Leboncoin: remove ads",
     "Leboncoin: privacy mode",
     "Leboncoin: persistent search filters",
