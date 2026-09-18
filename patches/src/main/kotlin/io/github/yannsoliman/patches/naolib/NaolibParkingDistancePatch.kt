@@ -24,6 +24,8 @@ val naolibParkingDistancePatch = bytecodePatch(
     name = "Naolib vélo: remove parking distance limit",
     description = "Remove the client-side parking distance limit while preserving Naolib vélo's normal account, subscription and API flow. Naolib vélo 3.6.1 only.",
 ) {
+    dependsOn(naolibPatchedInstallPatch)
+
     compatibleWith(Compatibility(
         name = "Naolib vélo",
         packageName = "com.jcdecaux.vls.nantes",

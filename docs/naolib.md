@@ -2,6 +2,11 @@
 
 Package: `com.jcdecaux.vls.nantes`. Input: complete split APK archive (APKS/XAPK).
 
+Both public patches depend on an internal startup fix. Naolib 3.6.1 uses Google
+Play PairIP from `Application.attachBaseContext`; Morphe re-signs and reinstalls
+the app, so the stock check opens the Play Store. The internal patch skips only
+`LicenseClient.checkLicense(context)` and preserves the real application startup.
+
 ## Remove parking distance limit
 
 The app compares GPS-to-parking distance with the contract's `parking.open.distance`
