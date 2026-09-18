@@ -1,3 +1,9 @@
+## [1.6.0-dev.4](https://github.com/yann-soliman/morphe-patches/compare/v1.6.0-dev.3...v1.6.0-dev.4) (2026-09-18)
+
+### 🐛 Bug Fixes
+
+* **naolib:** remove unusable patches ([db41037](https://github.com/yann-soliman/morphe-patches/commit/db41037065b8b42cc256a340212af0fac7874e08))
+
 ## [1.6.0-dev.3](https://github.com/yann-soliman/morphe-patches/compare/v1.6.0-dev.2...v1.6.0-dev.3) (2026-09-18)
 
 ### 🐛 Bug Fixes
