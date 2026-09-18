@@ -1,3 +1,9 @@
+## [1.6.0-dev.2](https://github.com/yann-soliman/morphe-patches/compare/v1.6.0-dev.1...v1.6.0-dev.2) (2026-09-18)
+
+### 🐛 Bug Fixes
+
+* **naolib:** correct cache filter smali field syntax ([418f918](https://github.com/yann-soliman/morphe-patches/commit/418f91811c9a1b28a87ad88061c13cca5b090004))
+
 ## [1.6.0-dev.1](https://github.com/yann-soliman/morphe-patches/compare/v1.5.0...v1.6.0-dev.1) (2026-09-18)
 
 ### ✨ New Features
