@@ -12,6 +12,8 @@ dependencies {
     compileOnly(libs.gson)
     patchListGeneratorClasspath(libs.gson)
 }
+configurations.testImplementation { extendsFrom(configurations.compileOnly.get()) }
+
 tasks.test { testLogging { showStandardStreams = true } }
 
 patches {
