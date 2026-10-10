@@ -1,3 +1,9 @@
+## [1.6.0-dev.5](https://github.com/yann-soliman/morphe-patches/compare/v1.6.0-dev.4...v1.6.0-dev.5) (2026-10-10)
+
+### ✨ New Features
+
+* **naolib:** restore maps with microG and add parking favorites ([c17d723](https://github.com/yann-soliman/morphe-patches/commit/c17d7237727c11430907a84230c1821a4c780851))
+
 ## [1.6.0-dev.4](https://github.com/yann-soliman/morphe-patches/compare/v1.6.0-dev.3...v1.6.0-dev.4) (2026-09-18)
 
 ### 🐛 Bug Fixes
