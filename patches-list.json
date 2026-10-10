@@ -1,16 +1,16 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "1.6.0-dev.4",
+  "version": "1.6.0-dev.5",
   "patches": [
     {
-      "name": "Keepcool: 30-day booking calendar",
-      "description": "Show and allow booking from today through J+30. Keepcool 1.8.21 only.",
+      "name": "Keep Cool : afficher les disponibilités",
+      "description": "Affiche une pastille verte sur les dates ayant au moins un créneau avec une place disponible. Compatible avec Keep Cool 1.8.21.",
       "default": true,
       "dependencies": [],
       "compatiblePackages": [
         {
           "packageName": "fr.keepcool.memberapp",
-          "name": "Keepcool",
+          "name": "Keep Cool",
           "description": null,
           "apkFileType": "APK",
           "appIconColor": null,
@@ -29,14 +29,14 @@
       "options": []
     },
     {
-      "name": "Keepcool: allow plus in email",
-      "description": "Allow + in the local email part without changing the input or login request. Keepcool 1.8.21 only.",
+      "name": "Keep Cool : autoriser le + dans les adresses e-mail",
+      "description": "Autorise le caractère + avant le @ dans les adresses e-mail utilisées pour se connecter. Compatible avec Keep Cool 1.8.21.",
       "default": true,
       "dependencies": [],
       "compatiblePackages": [
         {
           "packageName": "fr.keepcool.memberapp",
-          "name": "Keepcool",
+          "name": "Keep Cool",
           "description": null,
           "apkFileType": "APK",
           "appIconColor": null,
@@ -55,14 +55,14 @@
       "options": []
     },
     {
-      "name": "Keepcool: booking availability dots",
-      "description": "Show a green dot on calendar dates having at least one booking slot with a free place. Keepcool 1.8.21 only.",
+      "name": "Keep Cool : calendrier de réservation à 30 jours",
+      "description": "Affiche les dates et permet de sélectionner une réservation jusqu’à 30 jours à partir d’aujourd’hui. Compatible avec Keep Cool 1.8.21.",
       "default": true,
       "dependencies": [],
       "compatiblePackages": [
         {
           "packageName": "fr.keepcool.memberapp",
-          "name": "Keepcool",
+          "name": "Keep Cool",
           "description": null,
           "apkFileType": "APK",
           "appIconColor": null,
@@ -81,8 +81,8 @@
       "options": []
     },
     {
-      "name": "Leboncoin: persistent search filters",
-      "description": "Keeps the category, keywords, seller type, price, sort order, location and dynamic filters from the previous search when starting a new one. Leboncoin 100.125.0 only.",
+      "name": "Leboncoin : conserver les filtres de recherche",
+      "description": "Conserve la catégorie, les mots-clés, le type de vendeur, le prix, le tri, la localisation et les filtres de la recherche précédente lors d’une nouvelle recherche. Compatible avec Leboncoin 100.125.0.",
       "default": true,
       "dependencies": [],
       "compatiblePackages": [
@@ -107,8 +107,8 @@
       "options": []
     },
     {
-      "name": "Leboncoin: privacy mode",
-      "description": "Suppress behavioral analytics and attribution events sent through Firebase Analytics, Piano Analytics, Adjust and mParticle, and disable Datadog telemetry. Keeps consent, notifications and required SDK startup intact. Leboncoin 100.125.0 only.",
+      "name": "Leboncoin : limiter le suivi",
+      "description": "Bloque les événements de suivi envoyés par Firebase Analytics, Piano Analytics, Adjust, mParticle et Datadog. Conserve les notifications et les services nécessaires au fonctionnement de l’application. Compatible avec Leboncoin 100.125.0.",
       "default": true,
       "dependencies": [],
       "compatiblePackages": [
@@ -133,8 +133,8 @@
       "options": []
     },
     {
-      "name": "Leboncoin: remove ads",
-      "description": "Use Leboncoin's built-in ad-free paths to suppress banners, native ads and interstitials. Supports Leboncoin 100.124.1 and 100.125.0.",
+      "name": "Leboncoin : supprimer les publicités",
+      "description": "Supprime les bannières, les publicités intégrées aux listes et les publicités plein écran. Compatible avec Leboncoin 100.124.1 et 100.125.0.",
       "default": true,
       "dependencies": [],
       "compatiblePackages": [
@@ -207,6 +207,119 @@
           "targets": [
             {
               "version": "1.1.4",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Naolib vélo : carte avec microG",
+      "description": "Affiche la carte avec Morphe microG et les informations des parkings. Permet d’enregistrer des parkings favoris sur le téléphone, de recentrer la carte sur un favori et de retrouver la dernière position et le dernier zoom. Propose le téléchargement de microG si nécessaire. Les services Google Play doivent rester installés. Compatible avec Naolib vélo 3.6.1.",
+      "default": true,
+      "dependencies": [
+        "BytecodePatch",
+        "ResourcePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "com.jcdecaux.vls.nantes",
+          "name": "Naolib vélo",
+          "description": null,
+          "apkFileType": "XAPK",
+          "appIconColor": null,
+          "signatures": null,
+          "targets": [
+            {
+              "version": "3.6.1",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Naolib vélo : conserver les parkings",
+      "description": "Conserve les parkings en mémoire lorsque leur actualisation renvoie une liste vide. Compatible avec Naolib vélo 3.6.1.",
+      "default": true,
+      "dependencies": [
+        "BytecodePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "com.jcdecaux.vls.nantes",
+          "name": "Naolib vélo",
+          "description": null,
+          "apkFileType": "XAPK",
+          "appIconColor": null,
+          "signatures": null,
+          "targets": [
+            {
+              "version": "3.6.1",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Naolib vélo : déverrouiller les vélos à distance",
+      "description": "Retire le contrôle de proximité lors de la sélection d’une station et avant le déverrouillage d’un vélo. La localisation et un accès valide au service restent nécessaires. Compatible avec Naolib vélo 3.6.1.",
+      "default": true,
+      "dependencies": [
+        "BytecodePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "com.jcdecaux.vls.nantes",
+          "name": "Naolib vélo",
+          "description": null,
+          "apkFileType": "XAPK",
+          "appIconColor": null,
+          "signatures": null,
+          "targets": [
+            {
+              "version": "3.6.1",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Naolib vélo : ouvrir les parkings à distance",
+      "description": "Retire le contrôle de proximité pour ouvrir un véloparc avec son accès habituel. Compatible avec Naolib vélo 3.6.1.",
+      "default": true,
+      "dependencies": [
+        "BytecodePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "com.jcdecaux.vls.nantes",
+          "name": "Naolib vélo",
+          "description": null,
+          "apkFileType": "XAPK",
+          "appIconColor": null,
+          "signatures": null,
+          "targets": [
+            {
+              "version": "3.6.1",
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": null,

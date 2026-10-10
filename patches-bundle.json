@@ -1,7 +1,7 @@
 {
-  "version": "1.6.0-dev.4",
-  "created_at": "2026-09-18T08:10:33",
-  "description": "Personal dev bundle from d04707725c7236e8ecb9e21304314f4565339444",
+  "version": "1.6.0-dev.5",
+  "created_at": "2026-10-10T22:07:59",
+  "description": "Personal dev bundle from 2dfb1a45553fa498467fe2174159680bdb7af158",
   "download_url": "https://raw.githubusercontent.com/yann-soliman/morphe-patches/refs/heads/personal-dev-dist/patches-personal.mpp",
   "signature_download_url": ""
 }
