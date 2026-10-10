@@ -5,7 +5,7 @@ import app.morphe.patcher.patch.AppTarget
 import app.morphe.patcher.patch.Compatibility
 
 internal val KEEPCOOL_COMPATIBILITY = Compatibility(
-    name = "Keepcool",
+    name = "Keep Cool",
     packageName = "fr.keepcool.memberapp",
     apkFileType = ApkFileType.APK,
     targets = listOf(AppTarget(version = "1.8.21"))

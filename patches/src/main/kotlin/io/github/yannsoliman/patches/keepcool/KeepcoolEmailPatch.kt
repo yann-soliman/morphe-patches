@@ -16,8 +16,8 @@ internal val PLUS_REGEX = ORIGINAL_REGEX.substringBefore('@')
 
 @Suppress("unused")
 val keepcoolPlusEmailPatch = bytecodePatch(
-    name = "Keepcool: allow plus in email",
-    description = "Allow + in the local email part without changing the input or login request. Keepcool 1.8.21 only."
+    name = "Keep Cool : autoriser le + dans les adresses e-mail",
+    description = "Autorise le caractère + avant le @ dans les adresses e-mail utilisées pour se connecter. Compatible avec Keep Cool 1.8.21."
 ) {
     compatibleWith(KEEPCOOL_COMPATIBILITY)
     execute {

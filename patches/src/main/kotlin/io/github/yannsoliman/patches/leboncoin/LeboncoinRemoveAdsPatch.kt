@@ -19,8 +19,8 @@ private val AD_FREE_COMBINERS = setOf("Lmy0;", "Loy0;")
 
 @Suppress("unused")
 val leboncoinRemoveAdsPatch = bytecodePatch(
-    name = "Leboncoin: remove ads",
-    description = "Use Leboncoin's built-in ad-free paths to suppress banners, native ads and interstitials. Supports Leboncoin 100.124.1 and 100.125.0.",
+    name = "Leboncoin : supprimer les publicités",
+    description = "Supprime les bannières, les publicités intégrées aux listes et les publicités plein écran. Compatible avec Leboncoin 100.124.1 et 100.125.0.",
 ) {
     compatibleWith(Compatibility(
         name = "Leboncoin",

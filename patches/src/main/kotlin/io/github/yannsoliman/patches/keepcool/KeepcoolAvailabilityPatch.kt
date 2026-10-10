@@ -39,8 +39,8 @@ private fun invokeRegisters(instruction: Instruction): IntArray = when (instruct
 
 @Suppress("unused")
 val keepcoolBookingAvailabilityDotsPatch = bytecodePatch(
-    name = "Keepcool: booking availability dots",
-    description = "Show a green dot on calendar dates having at least one booking slot with a free place. Keepcool 1.8.21 only."
+    name = "Keep Cool : afficher les disponibilités",
+    description = "Affiche une pastille verte sur les dates ayant au moins un créneau avec une place disponible. Compatible avec Keep Cool 1.8.21."
 ) {
     compatibleWith(KEEPCOOL_COMPATIBILITY)
 

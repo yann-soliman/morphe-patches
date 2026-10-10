@@ -16,8 +16,8 @@ private const val SEARCH_REQUEST_MODEL =
 
 @Suppress("unused")
 val leboncoinPersistentFiltersPatch = bytecodePatch(
-    name = "Leboncoin: persistent search filters",
-    description = "Keeps the category, keywords, seller type, price, sort order, location and dynamic filters from the previous search when starting a new one. Leboncoin 100.125.0 only.",
+    name = "Leboncoin : conserver les filtres de recherche",
+    description = "Conserve la catégorie, les mots-clés, le type de vendeur, le prix, le tri, la localisation et les filtres de la recherche précédente lors d’une nouvelle recherche. Compatible avec Leboncoin 100.125.0.",
 ) {
     compatibleWith(Compatibility(
         name = "Leboncoin",

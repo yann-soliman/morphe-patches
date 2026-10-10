@@ -4,16 +4,20 @@ import sys
 from pathlib import Path
 
 PUBLIC_PATCHES = {
-    "Leboncoin: remove ads",
-    "Leboncoin: privacy mode",
-    "Leboncoin: persistent search filters",
+    "Naolib vélo : carte avec microG",
+    "Naolib vélo : déverrouiller les vélos à distance",
+    "Naolib vélo : ouvrir les parkings à distance",
+    "Naolib vélo : conserver les parkings",
+    "Leboncoin : supprimer les publicités",
+    "Leboncoin : limiter le suivi",
+    "Leboncoin : conserver les filtres de recherche",
     "Meteo Consult: remove ads and subscription prompts",
     "Meteo Consult: disable video autoplay",
-    "Keepcool: allow plus in email",
-    "Keepcool: booking availability dots",
+    "Keep Cool : autoriser le + dans les adresses e-mail",
+    "Keep Cool : afficher les disponibilités",
 }
 PERSONAL_PATCHES = PUBLIC_PATCHES | {
-    "Keepcool: 30-day booking calendar",
+    "Keep Cool : calendrier de réservation à 30 jours",
 }
 
 
