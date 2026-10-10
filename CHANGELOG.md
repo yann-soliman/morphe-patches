@@ -1,3 +1,17 @@
+## [1.6.0](https://github.com/yann-soliman/morphe-patches/compare/v1.5.0...v1.6.0) (2026-10-10)
+
+### 🐛 Bug Fixes
+
+* **naolib:** bypass Play installer check for patched builds ([85370fb](https://github.com/yann-soliman/morphe-patches/commit/85370fb49d2b391e78c1c6919a3ed9bd127b83ca))
+* **naolib:** correct cache filter smali field syntax ([418f918](https://github.com/yann-soliman/morphe-patches/commit/418f91811c9a1b28a87ad88061c13cca5b090004))
+* **naolib:** remove unusable patches ([db41037](https://github.com/yann-soliman/morphe-patches/commit/db41037065b8b42cc256a340212af0fac7874e08))
+
+### ✨ New Features
+
+* **naolib:** preserve parking list on empty network responses ([f4f12d3](https://github.com/yann-soliman/morphe-patches/commit/f4f12d335a392654311cad6e92c069938f02e8e0))
+* **naolib:** remove local parking distance limit ([0b021de](https://github.com/yann-soliman/morphe-patches/commit/0b021de866d23b6735f8bcfc990a46be5855ec9f))
+* **naolib:** restore maps with microG and add parking favorites ([c17d723](https://github.com/yann-soliman/morphe-patches/commit/c17d7237727c11430907a84230c1821a4c780851))
+
 ## [1.6.0-dev.5](https://github.com/yann-soliman/morphe-patches/compare/v1.6.0-dev.4...v1.6.0-dev.5) (2026-10-10)
 
 ### ✨ New Features
