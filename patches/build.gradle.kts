@@ -9,21 +9,25 @@ val personalBundle = providers.gradleProperty("personalBundle")
 val patchListGeneratorClasspath = configurations.create("patchListGeneratorClasspath")
 dependencies {
     testImplementation("junit:junit:4.13.2")
+    testImplementation("app.morphe:morphe-patcher:${libs.versions.morphe.patcher.get()}")
+    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.10.2")
     compileOnly(libs.gson)
     patchListGeneratorClasspath(libs.gson)
 }
+configurations.testImplementation { extendsFrom(configurations.compileOnly.get()) }
+
 tasks.test { testLogging { showStandardStreams = true } }
 
 patches {
     about {
         name = if (personalBundle.get()) "Yann's patches (personal)" else "Yann's patches"
         description = if (personalBundle.get()) {
-            "Personal Keepcool patches for use with Morphe."
+            "Patchs personnels pour Keep Cool à appliquer avec Morphe."
         } else {
-            "Android fixes for use with Morphe."
+            "Correctifs pour applications Android à appliquer avec Morphe."
         }
         source = "https://github.com/yann-soliman/morphe-patches"
-        author = "Yann Soliman; development assisted by Tiklaw"
+        author = "Yann Soliman; développement avec Tiklaw"
         contact = "https://github.com/yann-soliman/morphe-patches/issues"
         website = "https://github.com/yann-soliman/morphe-patches"
         license = "GPLv3"

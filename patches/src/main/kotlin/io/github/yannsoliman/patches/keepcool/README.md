@@ -12,7 +12,7 @@ Les patches ci-dessous ciblent actuellement :
 
 Les fingerprints sont conçus pour refuser l'application du patch si la structure attendue n'est pas retrouvée de manière suffisamment précise.
 
-## Keepcool: allow plus in email
+## Keep Cool : autoriser le + dans les adresses e-mail
 
 ### Fonction
 
@@ -34,13 +34,8 @@ La méthode observée dans Keepcool 1.8.21 est obfusquée, mais le patch ne dép
 
 La correspondance doit être unique.
 
-### Validation
 
-Les tests couvrent les adresses avec `+`, plusieurs adresses invalides et le comportement historique sans `+`.
-
-Le patch a aussi été appliqué au véritable APK Keepcool 1.8.21 et testé avec succès sur téléphone.
-
-## Keepcool: booking availability dots
+## Keep Cool : afficher les disponibilités
 
 ### Fonction
 
@@ -67,18 +62,6 @@ La logique runtime utilise :
 
 La disponibilité est déterminée à partir des informations retournées par l'API, notamment en vérifiant qu'un créneau dispose encore d'une place.
 
-### Validation
-
-La validation a confirmé :
-
-- les hooks attendus dans les méthodes de recherche de créneaux et de rendu des cellules ;
-- la conservation du flux de contrôle original ;
-- l'absence de suppression de classes applicatives ;
-- la reconstruction complète des DEX ;
-- le comportement de l'API avec une catégorie réelle non vide ;
-- l'absence d'appel mutant ;
-- l'absence de pastilles résiduelles lors du recyclage des cellules ;
-- le fonctionnement réel sur téléphone dans l'écran Small Groups.
 
 ## Installation et précautions
 

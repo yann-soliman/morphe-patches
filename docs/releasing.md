@@ -1,6 +1,10 @@
 # Publier une release
 
-La release se lance localement avec la configuration semantic-release du template Morphe. Il n'y a pas de workflow GitHub Actions activé dans ce dépôt.
+Le workflow GitHub Actions `Release` lance semantic-release après un push sur `main` ou `dev`. `main` publie une version stable ; `dev` publie une préversion. Les pull requests vers ces branches déclenchent le workflow `Validate`.
+
+Le bouton « Enregistrer et publier » de la configuration Codex cloud sauvegarde l’environnement de développement ; il ne pousse pas les modifications Git et ne publie pas de release GitHub.
+
+La procédure locale ci-dessous reste une alternative pour lancer semantic-release.
 
 Prérequis : JDK 21, Node.js 24 LTS et npm 11.5.1 ou plus récent (requis par les dépendances de release), Python 3, jq et un accès GitHub avec les droits de publication sur ce dépôt et `read:packages`.
 

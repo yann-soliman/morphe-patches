@@ -16,15 +16,21 @@ Ajouter cette source n'applique pas tous les patches : vous choisissez ceux à u
 
 | Application | Patch | Fonction |
 | --- | --- | --- |
-| Leboncoin 100.124.1–100.125.0 | **Leboncoin: remove ads** | Utilise le mode sans publicité intégré pour supprimer bannières, publicités natives et interstitiels. |
-| Leboncoin 100.125.0 | **Leboncoin: privacy mode** | Bloque la télémétrie comportementale Firebase, Piano, Adjust, mParticle et Datadog sans désactiver les services nécessaires au fonctionnement de l'application. |
-| Leboncoin 100.125.0 | **Leboncoin: persistent search filters** | Conserve les critères de la recherche précédente lors de l'ouverture d'une nouvelle recherche. |
+| Naolib vélo 3.6.1 | **Naolib vélo : carte avec microG** | Affiche la carte avec Morphe microG, les informations des parkings et les favoris. Mémorise la position de la carte. |
+| Naolib vélo 3.6.1 | **Naolib vélo : déverrouiller les vélos à distance** | Retire les contrôles locaux de proximité lors de la sélection d’une station et avant le déverrouillage. |
+| Naolib vélo 3.6.1 | **Naolib vélo : ouvrir les parkings à distance** | Retire le contrôle local de distance pour ouvrir un parking avec son accès habituel. |
+| Naolib vélo 3.6.1 | **Naolib vélo : conserver les parkings** | Conserve la liste existante lorsque le rafraîchissement réseau des parkings renvoie une liste vide. |
+| Leboncoin 100.124.1–100.125.0 | **Leboncoin : supprimer les publicités** | Utilise le mode sans publicité intégré pour supprimer bannières, publicités natives et interstitiels. |
+| Leboncoin 100.125.0 | **Leboncoin : limiter le suivi** | Bloque la télémétrie comportementale Firebase, Piano, Adjust, mParticle et Datadog sans désactiver les services nécessaires au fonctionnement de l'application. |
+| Leboncoin 100.125.0 | **Leboncoin : conserver les filtres de recherche** | Conserve les critères de la recherche précédente lors de l'ouverture d'une nouvelle recherche. |
 | METEO CONSULT 1.1.4 | **Meteo Consult: remove ads and subscription prompts** | Supprime les publicités et les sollicitations automatiques d'abonnement, y compris en fin de prévisions. |
 | METEO CONSULT 1.1.4 | **Meteo Consult: disable video autoplay** | Ouvre les vidéos météo en pause et conserve la lecture manuelle. |
-| Keepcool 1.8.21 | **Keepcool: allow plus in email** | Autorise les adresses contenant un `+` avant le `@` sans modifier l'adresse envoyée au serveur. |
-| Keepcool 1.8.21 | **Keepcool: booking availability dots** | Affiche une pastille verte sur les dates ayant au moins un créneau avec une place disponible. |
+| Keepcool 1.8.21 | **Keep Cool : autoriser le + dans les adresses e-mail** | Autorise les adresses contenant un `+` avant le `@` sans modifier l'adresse envoyée au serveur. |
+| Keepcool 1.8.21 | **Keep Cool : afficher les disponibilités** | Affiche une pastille verte sur les dates ayant au moins un créneau avec une place disponible. |
 
 Le détail du fonctionnement, de l'implémentation et des validations des patches Keepcool est disponible dans [leur README dédié](patches/src/main/kotlin/io/github/yannsoliman/patches/keepcool/README.md).
+
+Le fonctionnement et l’installation des patchs Naolib sont décrits dans [ce guide](docs/naolib.md).
 
 ## Construire le bundle
 

@@ -29,8 +29,8 @@ private data class VoidTelemetryMethod(
 
 @Suppress("unused")
 val leboncoinPrivacyModePatch = bytecodePatch(
-    name = "Leboncoin: privacy mode",
-    description = "Suppress behavioral analytics and attribution events sent through Firebase Analytics, Piano Analytics, Adjust and mParticle, and disable Datadog telemetry. Keeps consent, notifications and required SDK startup intact. Leboncoin 100.125.0 only.",
+    name = "Leboncoin : limiter le suivi",
+    description = "Bloque les événements de suivi envoyés par Firebase Analytics, Piano Analytics, Adjust, mParticle et Datadog. Conserve les notifications et les services nécessaires au fonctionnement de l’application. Compatible avec Leboncoin 100.125.0.",
 ) {
     compatibleWith(Compatibility(
         name = "Leboncoin",

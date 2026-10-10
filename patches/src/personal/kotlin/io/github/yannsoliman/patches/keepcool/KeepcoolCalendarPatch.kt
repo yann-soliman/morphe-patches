@@ -21,8 +21,8 @@ private fun ReferenceInstruction.typeReference(): TypeReference? = reference as?
 
 @Suppress("unused")
 val keepcoolThirtyDayCalendarPatch = bytecodePatch(
-    name = "Keepcool: 30-day booking calendar",
-    description = "Show and allow booking from today through J+30. Keepcool 1.8.21 only."
+    name = "Keep Cool : calendrier de réservation à 30 jours",
+    description = "Affiche les dates et permet de sélectionner une réservation jusqu’à 30 jours à partir d’aujourd’hui. Compatible avec Keep Cool 1.8.21."
 ) {
     compatibleWith(KEEPCOOL_COMPATIBILITY)
     execute {
